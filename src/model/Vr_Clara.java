@@ -35,7 +35,7 @@ public class Vr_Clara extends VitoriaRegia {
 		} else {
 			setImagem("imagens/Vr_ClaraFlorAmarela.png");
 		}
-
+		corFlor = "amarela";
 		this.hasFlor = true;
 	}
 
@@ -46,7 +46,7 @@ public class Vr_Clara extends VitoriaRegia {
 		} else {
 			setImagem("imagens/Vr_ClaraFlorVermelha.png");
 		}
-
+		corFlor = "vermelha";
 		this.hasFlor = true;
 	}
 	
@@ -56,6 +56,7 @@ public class Vr_Clara extends VitoriaRegia {
 		this.hasFlor = false;
 		this.hasSapo = false;
 		this.sapo = null;
+		corFlor = "";
 		setImagem("imagens/Vr_Clara.png");
 	}
 
@@ -86,6 +87,7 @@ public class Vr_Clara extends VitoriaRegia {
 	@Override
 	public void removerFlor() {
 			this.hasFlor = false;
+			corFlor = "";
 			setImagem("imagens/Vr_Clara.png");
 	}
 

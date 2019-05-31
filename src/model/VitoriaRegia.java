@@ -13,6 +13,8 @@ public abstract class VitoriaRegia extends GameObject{
 	public abstract String removerSapo();
 	public abstract void removerFlor();
 	
+	protected String corFlor = "";
+	
 	//métodos em comum que não possuem variação
 	public boolean isVirada() {
 		return this.isVirada;
@@ -24,6 +26,10 @@ public abstract class VitoriaRegia extends GameObject{
 	
 	public boolean hasFlor() {
 		return this.hasFlor;
+	}
+	
+	public String getFlorCor() {
+		return corFlor;
 	}
 	
 	

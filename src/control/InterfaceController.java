@@ -31,7 +31,7 @@ public interface InterfaceController extends Observado{
 	
 	void ventoDaPrimavera();
 	
-	void verificarPadroes(String cor);
+	void verificarPadroes();
 
 	void removerFlor(String action);
 

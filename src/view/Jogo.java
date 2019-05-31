@@ -7,15 +7,12 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import java.lang.annotation.Documented;
 
-import javax.management.ConstructorParameters;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -499,13 +496,14 @@ public class Jogo extends JFrame implements Observador {
 		opcoesFlores.add(op3, BorderLayout.SOUTH);
 
 		add(opcoesFlores, BorderLayout.LINE_END);
+		
 		/* Temporário...
 		 * Apenas até a segunda entrega quando a pontuação será calculada vou arrumar isso
 		 * de forma que seja algo que mude de acordo com a pontuação*/
 		pontuacao = new JPanel();
 		pontuacao.setLayout(new BorderLayout());
 		pontos = new JLabel();
-		pontos.setIcon(new ImageIcon("imagens/Pontuacao.png"));
+		pontos.setIcon(new ImageIcon("imagens/pontuacao/pontuacao0x0.png"));
 		pontuacao.add(pontos);
 		add(pontuacao, BorderLayout.WEST);
 
@@ -544,8 +542,8 @@ public class Jogo extends JFrame implements Observador {
 	}
 
 	@Override
-	public void notificarGanhadorDaRodada(String ganhador, int pontos) {
-		// TODO apenas na segunda entrega
+	public void notificarGanhadorDaRodada(int pontosAmarelo, int pontosVermelho) {
+		pontos.setIcon(new ImageIcon("imagens/pontuacao/pontuacao"+pontosAmarelo+"x"+pontosVermelho+".png"));
 	}
 
 	@Override
@@ -685,5 +683,6 @@ public class Jogo extends JFrame implements Observador {
 		florIcone3.setIcon(florVermelha);
 		
 	}
+	
 
 }

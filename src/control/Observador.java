@@ -13,7 +13,7 @@ public interface Observador {
 	
 	void notificarIconesVermelhos();
 	
-	void notificarGanhadorDaRodada(String ganhador, int pontos);
+	void notificarGanhadorDaRodada(int pontosAmarelo, int pontosVermelho);
 	
 	void notificarJogadorPescou(int[] mao);
 	

@@ -2,10 +2,11 @@ package model;
 
 //classe do tabuleiro padrão do jogo
 public class TabuleiroPadrao extends Tabuleiro{
-	
+	private int  row = 5;
+	private int column = 5;
 	
 	public TabuleiroPadrao() {
-		tabuleiro = new GameObject[5][5];
+		tabuleiro = new GameObject[row][column];
 	}
 
 	@Override
@@ -31,5 +32,15 @@ public class TabuleiroPadrao extends Tabuleiro{
 	@Override
 	public void setVrOvasVermelha(int y, int x) {
 		this.tabuleiro[y][x] = spawner.spawnVrClaraOvasVermelhas();
+	}
+
+	@Override
+	public int getColumns() {
+		return column;
+	}
+
+	@Override
+	public int getRows() {
+		return row;
 	}
 }

@@ -13,6 +13,7 @@ public class Vr_ClaraOvasAmarelas extends Vr_ClaraOvas {
 	public void removerFlor() {
 		setImagem("imagens/Vr_ClaraOvasAmarelas.png");
 		this.hasFlor = false;
+		corFlor = "";
 	}
 
 	@Override
@@ -41,12 +42,14 @@ public class Vr_ClaraOvasAmarelas extends Vr_ClaraOvas {
 	public void adicionarFlorAmarela() {
 		setImagem("imagens/Vr_ClaraOvasAmarelasFlorAmarela.png");
 		this.hasFlor = true;
+		corFlor = "amarela";
 	}
 
 	@Override
 	public void adicionarFlorVermelha() {
 		setImagem("imagens/Vr_ClaraOvasAmarelasFlorVermelha.png");
 		this.hasFlor = true;
+		corFlor = "vermelha";
 	}
 
 	@Override
@@ -67,6 +70,7 @@ public class Vr_ClaraOvasAmarelas extends Vr_ClaraOvas {
 	public void reset() {
 		this.hasSapo = true;
 		this.hasFlor = false;
+		corFlor = "";
 		setImagem("imagens/Vr_ClaraOvasAmarelasSapoAmarelo.png");
 
 	}
