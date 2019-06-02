@@ -7,4 +7,7 @@ public class FlorAmarela extends Flor {
 		super(numero, "imagens/florAmarela.png");
 	}
 
+	@Override
+	public void reset() {}
+
 }

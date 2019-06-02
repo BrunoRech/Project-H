@@ -12,8 +12,6 @@ import control.abstractFactory.VersaoBasica;
 import control.builder.Director;
 import control.builder.TabuleiroBuilder;
 import control.builder.TabuleiroPadraoBuilder;
-import control.command.CommandInvoker;
-import control.command.MoverVitoriasRegiasParaCimaCommand;
 import control.visitor.Padrao1x4;
 import control.visitor.Padrao2x2;
 import control.visitor.PadraoDiagonal4;
@@ -28,13 +26,12 @@ import model.FlorAmarela;
 import model.FlorVermelha;
 import model.GameObject;
 import model.Tabuleiro;
-import model.TabuleiroPadrao;
 import model.VitoriaRegia;
 import model.Vr_Clara;
-import model.Vr_ClaraOvas;
-import model.Vr_ClaraOvasAmarelas;
-import model.Vr_ClaraOvasVermelhas;
-import model.Vr_Escura;
+import model.composite.GameObjectComposite;
+import model.decorator.DuplaFaceDecorator;
+import model.decorator.OvasAmarelasDecorator;
+import model.decorator.OvasVermelhasDecorator;
 
 //classe do controlador do game
 public class GameController implements InterfaceController {
@@ -84,7 +81,6 @@ public class GameController implements InterfaceController {
 		this.spawner = new VersaoBasica();// se tivesse outra versão o usuario escolheria e atribuiria aqui
 		this.builder = new TabuleiroPadraoBuilder();
 		this.director = new Director(this.builder);
-
 		this.visitors.add(new Padrao2x2());
 		this.visitors.add(new Padrao1x4());
 		this.visitors.add(new PadraoDiagonal4());
@@ -103,7 +99,7 @@ public class GameController implements InterfaceController {
 	@Override
 	// cria o tabuleiro
 	public void inicializarTabuleiro() {
-		director.construir();
+		director.construir(this.spawner);
 		tabuleiro = this.builder.getTabuleiro();
 		ventoIsPressed = false;
 		indexX = -1;
@@ -227,12 +223,12 @@ public class GameController implements InterfaceController {
 			if (conferirIndex()) {
 
 				if (tabuleiro.getElementAt(indexY, indexX).getClass() != Agua.class
-						&& tabuleiro.getElementAt(indexY, indexX).getClass() != Vr_Escura.class) {
-					Vr_Clara vr = (Vr_Clara) tabuleiro.getElementAt(indexY, indexX);
+						&& tabuleiro.getElementAt(indexY, indexX).getClass() != DuplaFaceDecorator.class) {
+					VitoriaRegia vr = (VitoriaRegia) tabuleiro.getElementAt(indexY, indexX);
 					if (vr.hasFlor()) {
 						throw new CampoInvalidoException();
 					} else {
-						if (vr.hasSapo()) {
+						if (vr.isHasSapo()) {
 							corSapoRemovido = vr.removerSapo();
 							notificarSapoRemovido();
 						}
@@ -344,10 +340,10 @@ public class GameController implements InterfaceController {
 		try {
 			validarUndo(action);
 			if (conferirIndex()) {
-				Vr_Clara vr = (Vr_Clara) tabuleiro.getElementAt(indexY, indexX);
+				VitoriaRegia vr = (VitoriaRegia) tabuleiro.getElementAt(indexY, indexX);
 
 				if (!vr.hasFlor()) {
-					if (vr.hasSapo()) {
+					if (vr.isHasSapo()) {
 						corSapoRemovido = vr.removerSapo();
 						notificarSapoRemovido();
 					} else {
@@ -363,6 +359,7 @@ public class GameController implements InterfaceController {
 					notificarFlorAdicionada();
 					validarExecute(action);
 					validarVento();
+					verificarPadroes();
 				} else {
 					throw new CampoInvalidoException();
 				}
@@ -385,12 +382,11 @@ public class GameController implements InterfaceController {
 	public void adicionarSapo(String action) {
 		try {
 			validarUndo(action);
-
 			if (conferirIndex() && (tabuleiro.getElementAt(indexY, indexX).getClass() == Vr_Clara.class)
-					|| tabuleiro.getElementAt(indexY, indexX).getClass() == Vr_ClaraOvasAmarelas.class
-					|| tabuleiro.getElementAt(indexY, indexX).getClass() == Vr_ClaraOvasVermelhas.class) {
-				Vr_Clara vr = (Vr_Clara) tabuleiro.getElementAt(indexY, indexX);
-				if (!vr.hasSapo() && !vr.hasFlor() && !vr.isVirada()) {
+					|| tabuleiro.getElementAt(indexY, indexX).getClass() == OvasAmarelasDecorator.class
+					|| tabuleiro.getElementAt(indexY, indexX).getClass() == OvasVermelhasDecorator.class) {
+				VitoriaRegia vr = (VitoriaRegia) tabuleiro.getElementAt(indexY, indexX);
+				if (!vr.isHasSapo() && !vr.hasFlor() && !vr.isVirada()) {
 					if (corSapoRemovido.equalsIgnoreCase("amarelo")) {
 						vr.adicionarSapoAmarelo();
 					} else if (corSapoRemovido.equalsIgnoreCase("vermelho")) {
@@ -403,9 +399,10 @@ public class GameController implements InterfaceController {
 					throw new CampoInvalidoException();
 				}
 
+			} else {
+				throw new CampoInvalidoException();
 			}
 		} catch (NenhumCampoSelecionadoException | CampoInvalidoException e) {
-			e.printStackTrace();
 			for (Observador obs : observadores) {
 				obs.notificarSapoHabilitado();
 				obs.notificarSelecaoTabuleiroAprovada();
@@ -419,23 +416,22 @@ public class GameController implements InterfaceController {
 	// posições
 	public void limparMesa() {
 
-		for (int i = 0; i < 5; i++) {
-			for (int j = 0; j < 5; j++) {
+		GameObjectComposite.getInstance().reset();
+//		for (int i = 0; i < 5; i++) {
+//			for (int j = 0; j < 5; j++) {				
+//				if (tabuleiro.getElementAt(j, i).getClass() != Agua.class) {
+//					VitoriaRegia vr = (VitoriaRegia) tabuleiro.getElementAt(j, i);
+//					vr.reset();
+//				} 
+//		}
+//			}
 
-				if (tabuleiro.getElementAt(j, i).getClass() != Agua.class) {
-					VitoriaRegia vr = (VitoriaRegia) tabuleiro.getElementAt(j, i);
-					vr.reset();
-				}
-
-			}
-
-			for (Observador obs : observadores) {
-				obs.notificarMudouTabuleiro();
-				obs.notificarSelecaoFlorDisponivel();
-			}
-
-			embaralharMontes();
+		for (Observador obs : observadores) {
+			obs.notificarMudouTabuleiro();
+			obs.notificarSelecaoFlorDisponivel();
 		}
+
+		embaralharMontes();
 
 	}
 
@@ -498,7 +494,7 @@ public class GameController implements InterfaceController {
 		VitoriaRegia vr;
 		for (int i = 0; i < 5; i++) {
 			for (int j = 0; j < 5; j++) {
-				if (tabuleiro.getElementAt(j, i).getClass() == Vr_Escura.class) {
+				if (tabuleiro.getElementAt(j, i).getClass() == DuplaFaceDecorator.class) {
 					vr = (VitoriaRegia) tabuleiro.getElementAt(j, i);
 					if (!vr.hasFlor()) {
 						int[] pos = { j, i };
@@ -506,8 +502,8 @@ public class GameController implements InterfaceController {
 					}
 
 				} else if (tabuleiro.getElementAt(j, i).getClass() == Vr_Clara.class
-						|| tabuleiro.getElementAt(j, i).getClass() == Vr_ClaraOvasVermelhas.class
-						|| tabuleiro.getElementAt(j, i).getClass() == Vr_ClaraOvasAmarelas.class) {
+						|| tabuleiro.getElementAt(j, i).getClass() == OvasVermelhasDecorator.class
+						|| tabuleiro.getElementAt(j, i).getClass() == OvasAmarelasDecorator.class) {
 					vr = (VitoriaRegia) tabuleiro.getElementAt(j, i);
 					if (vr.isVirada() && !vr.hasFlor()) {
 						int[] pos = { j, i };
@@ -542,11 +538,11 @@ public class GameController implements InterfaceController {
 			if (visitor.amareloPontuou()) {
 				pontuacaoAmarelo += visitor.getPontuacao();
 				houvePontuador = true;
-			}else if (visitor.vermelhoPontuou()) {
+			} else if (visitor.vermelhoPontuou()) {
 				pontuacaoVermelho += visitor.getPontuacao();
 				houvePontuador = true;
 			}
-			
+
 		}
 		if (houvePontuador) {
 			limparMesa();
@@ -562,9 +558,9 @@ public class GameController implements InterfaceController {
 	// um é tratado diferente
 	public void removerFlor(String action) {
 		validarUndo(action);
-		Vr_Clara vr = (Vr_Clara) tabuleiro.getElementAt(indexY, indexX);
+		VitoriaRegia vr = (VitoriaRegia) tabuleiro.getElementAt(indexY, indexX);
 		vr.removerFlor();
-		if (vr.getClass() == Vr_ClaraOvasAmarelas.class || vr.getClass() == Vr_ClaraOvasVermelhas.class) {
+		if (vr.getClass() == OvasAmarelasDecorator.class || vr.getClass() == OvasVermelhasDecorator.class) {
 			if (corSapoRemovido.equalsIgnoreCase("vermelho")) {
 				vr.adicionarSapoVermelho();
 			} else {
@@ -679,6 +675,7 @@ public class GameController implements InterfaceController {
 			notificarMudancaTabuleiro();
 			moveuVr = true;
 			comecarNovaRodada();
+			verificarPadroes();
 		} catch (MovimentoInvalidoException e) {
 			for (Observador obs : observadores)
 				obs.notificarMovimentacaoHabilitada();
@@ -719,6 +716,7 @@ public class GameController implements InterfaceController {
 			notificarMudancaTabuleiro();
 			moveuVr = true;
 			comecarNovaRodada();
+			verificarPadroes();
 		} catch (MovimentoInvalidoException e) {
 			for (Observador obs : observadores)
 				obs.notificarMovimentacaoHabilitada();
@@ -758,6 +756,7 @@ public class GameController implements InterfaceController {
 			notificarMudancaTabuleiro();
 			moveuVr = true;
 			comecarNovaRodada();
+			verificarPadroes();
 		} catch (MovimentoInvalidoException e) {
 			for (Observador obs : observadores)
 				obs.notificarMovimentacaoHabilitada();
@@ -798,7 +797,7 @@ public class GameController implements InterfaceController {
 			notificarMudancaTabuleiro();
 			moveuVr = true;
 			comecarNovaRodada();
-
+			verificarPadroes();
 		} catch (MovimentoInvalidoException e) {
 			for (Observador obs : observadores)
 				obs.notificarMovimentacaoHabilitada();

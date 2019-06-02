@@ -1,5 +1,6 @@
 package control.builder;
 
+import control.abstractFactory.Spawner;
 import control.abstractFactory.VersaoBasica;
 import model.Tabuleiro;
 import model.TabuleiroPadrao;
@@ -73,7 +74,7 @@ public class TabuleiroPadraoBuilder extends TabuleiroBuilder{
 
 	@Override
 	//cria um novo tabuleiro e dá set no tipo de spawner
-	public void reset() {
+	public void reset(Spawner spawner) {
 		this.tabuleiro = new TabuleiroPadrao();
 		tabuleiro.setSpawner(new VersaoBasica());
 	}

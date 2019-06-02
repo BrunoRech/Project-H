@@ -403,7 +403,8 @@ public class Jogo extends JFrame implements Observador {
 			@Override
 			public void actionPerformed(ActionEvent event) {
 				try {
-					controle.mudarJogador();
+					//controle.mudarJogador();
+					controle.limparMesa();
 				} catch (Exception e) {
 					e.printStackTrace();
 					JOptionPane.showMessageDialog(null, e.toString());

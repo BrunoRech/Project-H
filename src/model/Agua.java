@@ -4,7 +4,10 @@ package model;
 public class Agua extends GameObject {
 
 	public Agua() {
-		super("imagens/water.png");
+		this.setImagem("imagens/water.png");
 	}
+
+	@Override
+	public void reset() {}
 
 }
