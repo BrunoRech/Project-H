@@ -1,5 +1,7 @@
 package control.builder;
 
+import control.abstractFactory.Spawner;
+
 //classe do diretor que comanda os construtores
 public class Director {
 	private TabuleiroBuilder builder;
@@ -10,8 +12,8 @@ public class Director {
 		this.builder = builder;
 	}
 	//método de criação do tabuleiro chamando o builder para executar passo-a-passo
-	public void construir() {
-		builder.reset();
+	public void construir(Spawner spawner) {
+		builder.reset(spawner);
 		builder.construirAgua();
 		builder.construirVrClaras();
 		builder.construirVrEscura();
