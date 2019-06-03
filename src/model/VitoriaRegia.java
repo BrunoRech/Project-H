@@ -2,34 +2,36 @@ package model;
 
 //classe abstrata de da peça vitória régia
 public abstract class VitoriaRegia extends GameObject{
+	
+	protected String nomeFlor,ovas,aditivo;
+	
 	private boolean hasFlor = false;
 	private boolean isVirada = false;
-	private boolean hasSapo = false;
-	private String sapo;
-	//métodos abstratos
-	public abstract void adicionarSapoVermelho();
-	public abstract void adicionarSapoAmarelo();
-	public abstract void adicionarFlorAmarela();
-	public abstract void adicionarFlorVermelha();
-	public abstract void reset();
-	public abstract void desvirar();
-	public abstract void virar();
-	public abstract String removerSapo();
-	public abstract void removerFlor();
 	
-	private String corFlor = "";
+	protected boolean hasSapo = false;
+	protected String sapo;
+
+	public abstract void reset();
+	
+	protected String corFlor = "";
 	
 	//métodos em comum que não possuem variação
 	public boolean isVirada() {
 		return this.isVirada;
 	}
 	
+	@Override
+	public String getImagem() {
+		return "imagens/"+nomeFlor+ovas+aditivo+".png";
+	}
+
+	
 	public boolean hasFlor() {
-		return this.isHasFlor();
+		return this.hasFlor;
 	}
 	
 	public String getFlorCor() {
-		return getCorFlor();
+		return corFlor;
 	}
 	public boolean isHasSapo() {
 		return hasSapo;
@@ -43,21 +45,43 @@ public abstract class VitoriaRegia extends GameObject{
 	public void setSapo(String sapo) {
 		this.sapo = sapo;
 	}
-	public void setVirada(boolean isVirada) {
-		this.isVirada = isVirada;
-	}
 	public boolean isHasFlor() {
 		return hasFlor;
 	}
 	public void setHasFlor(boolean hasFlor) {
 		this.hasFlor = hasFlor;
 	}
-	public String getCorFlor() {
-		return corFlor;
+	public void setVirada(boolean isVirada) {
+		this.isVirada = isVirada;
 	}
-	public void setCorFlor(String corFlor) {
-		this.corFlor = corFlor;
+	
+	
+	//
+	public String getNomeFlor() {
+		return nomeFlor;
 	}
+	public void setNomeFlor(String nomeFlor) {
+		this.nomeFlor = nomeFlor;
+	}
+	public String getOvas() {
+		return ovas;
+	}
+	public void setOvas(String ovas) {
+		this.ovas = ovas;
+	}
+	public String getAditivo() {
+		return aditivo;
+	}
+	public void setAditivo(String aditivo) {
+		this.aditivo = aditivo;
+	}
+	
+	
+	
+	
+	
+	
+	
 	
 	
 

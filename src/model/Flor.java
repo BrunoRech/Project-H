@@ -4,7 +4,7 @@ package model;
 public abstract class Flor extends GameObject{
 
 	public Flor(int numero,String imagem) {
-		this.setImagem(imagem);
+		setImagem(imagem);
 		this.numero = numero;
 		
 	}

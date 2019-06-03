@@ -5,10 +5,12 @@ import model.Flor;
 import model.FlorAmarela;
 import model.FlorVermelha;
 import model.VitoriaRegia;
-import model.Vr_Clara;
-import model.decorator.DuplaFaceDecorator;
+import model.VitoriaRegiaComponent;
+import model.Vr_Escura;
 import model.decorator.OvasAmarelasDecorator;
 import model.decorator.OvasVermelhasDecorator;
+import model.decorator.SapoAmareloDecorator;
+import model.decorator.SapoVermelhoDecorator;
 
 //classe do concrete factory da versão básica do jogo
 public class VersaoBasica extends Spawner{
@@ -27,22 +29,22 @@ public class VersaoBasica extends Spawner{
 
 	@Override
 	public VitoriaRegia spawnVrClara() {
-		return new Vr_Clara();
+		return new VitoriaRegiaComponent();
 	}
 
 	@Override
 	public VitoriaRegia spawnVrClaraOvasAmarelas() {
-		return new OvasAmarelasDecorator(new Vr_Clara());
+		return new OvasAmarelasDecorator(new SapoAmareloDecorator(new VitoriaRegiaComponent()));
 	}
 
 	@Override
 	public VitoriaRegia spawnVrClaraOvasVermelhas() {
-		return new OvasVermelhasDecorator(new Vr_Clara());
+		return new OvasVermelhasDecorator(new SapoVermelhoDecorator(new VitoriaRegiaComponent()));
 	}
 
 	@Override
 	public VitoriaRegia spawnVrEscura() {
-		return new DuplaFaceDecorator(new Vr_Clara());
+		return new Vr_Escura();
 	}
 
 	@Override
