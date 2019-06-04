@@ -25,10 +25,14 @@ public class Vr_Escura extends VitoriaRegia {
 	}
 
 	@Override
-	public void reset() {
+	public VitoriaRegia reset() {
 		setHasFlor(false);
-		setImagem("imagens/Vr_Escura.png");
+		this.ovas = "";
+		this.aditivo = "";
+		this.nomeFlor = "Vr_Escura";
+		setImagem(this.getImagem());
 		corFlor = "";
+		return this;
 	}
 
 

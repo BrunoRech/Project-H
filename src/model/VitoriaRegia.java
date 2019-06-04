@@ -11,7 +11,7 @@ public abstract class VitoriaRegia extends GameObject{
 	protected boolean hasSapo = false;
 	protected String sapo;
 
-	public abstract void reset();
+	public abstract VitoriaRegia reset();
 	
 	protected String corFlor = "";
 	

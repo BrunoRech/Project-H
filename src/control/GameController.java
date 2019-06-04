@@ -39,6 +39,7 @@ import model.decorator.OvasAmarelasDecorator;
 import model.decorator.OvasVermelhasDecorator;
 import model.decorator.SapoAmareloDecorator;
 import model.decorator.SapoVermelhoDecorator;
+import model.decorator.VitoriaRegiaDecorator;
 
 //classe do controlador do game
 public class GameController implements InterfaceController {
@@ -241,7 +242,6 @@ public class GameController implements InterfaceController {
 						if (vr.isHasSapo()) {
 							//TODO sapo
 							//corSapoRemovido = vr.removerSapo();
-							
 							notificarSapoRemovido();
 						}
 						tabuleiro.setElementAt(new EscurecerDecorator(vr), indexY, indexX);
@@ -400,9 +400,9 @@ public class GameController implements InterfaceController {
 				VitoriaRegiaComponent vr = (VitoriaRegiaComponent) tabuleiro.getElementAt(indexY, indexX);
 				if (!vr.hasSapo() && !vr.hasFlor() && !vr.isVirada()) {
 					if (corSapoRemovido.equalsIgnoreCase("amarelo")) {
-						vr.adicionarSapoAmarelo();
+						tabuleiro.setElementAt(new SapoAmareloDecorator(vr), indexY, indexX);
 					} else if (corSapoRemovido.equalsIgnoreCase("vermelho")) {
-						vr.adicionarSapoVermelho();
+						tabuleiro.setElementAt(new SapoVermelhoDecorator(vr), indexY, indexX);
 					}
 					notificarSapoAdicionado();
 					validarExecute(action);
@@ -432,7 +432,7 @@ public class GameController implements InterfaceController {
 
 				if (tabuleiro.getElementAt(j, i).getClass() != Agua.class) {
 					VitoriaRegia vr = (VitoriaRegia) tabuleiro.getElementAt(j, i);
-					vr.reset();
+					tabuleiro.setElementAt(vr.reset(), j, i);
 				}
 
 			}

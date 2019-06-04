@@ -14,52 +14,21 @@ public class VitoriaRegiaComponent extends VitoriaRegia {
 	public boolean hasSapo() {
 		return this.hasSapo;
 	}
-	//adiciona um sapo vermelho
-	public void adicionarSapoVermelho() {
-			this.hasSapo = true;
-			setImagem("imagens/Vr_ClaraSapoVermelho.png");
-			this.sapo = "vermelho";
 
-
-	}
-	//adiciona um sapo amarelo
-	public void adicionarSapoAmarelo() {
-			setImagem("imagens/Vr_ClaraSapoAmarelo.png");
-			this.sapo = "amarelo";
-
-		this.hasSapo = true;
-	}
-
-
-	public void adicionarFlorAmarela() {
-		if (isVirada()) {
-			setImagem("imagens/Vr_EscuraFlorAmarela.png");
-		} else {
-			setImagem("imagens/Vr_ClaraFlorAmarela.png");
-		}
-		corFlor = "amarela";
-		setHasFlor(true);
-	}
-
-//	@Override
-	public void adicionarFlorVermelha() {
-		if (isVirada()) {
-			setImagem("imagens/Vr_EscuraFlorVermelha.png");
-		} else {
-			setImagem("imagens/Vr_ClaraFlorVermelha.png");
-		}
-		corFlor = "vermelha";
-		setHasFlor(true);
-	}
 	
 
 	@Override
-	public void reset() {
-		setHasFlor(true);
+	public VitoriaRegia reset() {
+		setHasFlor(false);
 		this.hasSapo = false;
 		this.sapo = null;
 		corFlor = "";
-		setImagem("imagens/Vr_Clara.png");
+		this.ovas = "";
+		this.aditivo = "";
+		this.nomeFlor = "Vr_Clara";
+		
+		setImagem(this.getImagem());
+		return this;
 	}
 
 //	@Override

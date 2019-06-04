@@ -11,10 +11,6 @@ public class OvasVermelhasDecorator extends VitoriaRegiaDecorator{
 		this.aditivo = vr.getAditivo();
 	}
 
-	@Override
-	public void reset() {
-		// TODO Auto-generated method stub
-		
-	}
+
 
 }

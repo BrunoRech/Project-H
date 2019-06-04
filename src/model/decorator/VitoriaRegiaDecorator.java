@@ -20,6 +20,11 @@ public abstract class VitoriaRegiaDecorator extends VitoriaRegia{
 		return vr;
 	}
 	
+	@Override
+	public VitoriaRegia reset() {
+
+		return getVr();
+	}
 	
 
 }

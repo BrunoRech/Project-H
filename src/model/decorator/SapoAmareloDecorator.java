@@ -11,11 +11,6 @@ public class SapoAmareloDecorator extends VitoriaRegiaDecorator{
 		this.aditivo = "SapoAmarelo";
 	}
 
-	@Override
-	public void reset() {
-		// TODO Auto-generated method stub
-		
-	}
 	
 	@Override
 	public boolean isHasSapo() {

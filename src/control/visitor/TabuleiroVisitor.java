@@ -13,7 +13,7 @@ public abstract class TabuleiroVisitor {
 	public abstract void verificarPadraoVermelho(Tabuleiro tabuleiro);
 
 	public boolean aux(VitoriaRegia vr, String cor) {
-		if (vr.hasFlor() && vr.getFlorCor().equalsIgnoreCase(cor)) {
+		if (vr.isHasFlor() && vr.getFlorCor().equalsIgnoreCase(cor)) {
 			return true;
 		}
 		return false;

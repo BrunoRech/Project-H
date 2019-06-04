@@ -18,11 +18,9 @@ public class FlorVermelhaDecorator extends VitoriaRegiaDecorator{
 	
 	
 	@Override
-	public boolean hasFlor() {
+	public boolean isHasFlor() {
 		return true;
 	}
 
-	@Override
-	public void reset() {}
 
 }

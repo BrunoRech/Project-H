@@ -12,10 +12,6 @@ public class SapoVermelhoDecorator extends VitoriaRegiaDecorator{
 		
 	}
 
-	@Override
-	public void reset() {
-		
-	}
 	
 	@Override
 	public boolean isHasSapo() {

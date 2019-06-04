@@ -34,12 +34,12 @@ public class VersaoBasica extends Spawner{
 
 	@Override
 	public VitoriaRegia spawnVrClaraOvasAmarelas() {
-		return new OvasAmarelasDecorator(new SapoAmareloDecorator(new VitoriaRegiaComponent()));
+		return new SapoAmareloDecorator(new OvasAmarelasDecorator(new VitoriaRegiaComponent()));
 	}
 
 	@Override
 	public VitoriaRegia spawnVrClaraOvasVermelhas() {
-		return new OvasVermelhasDecorator(new SapoVermelhoDecorator(new VitoriaRegiaComponent()));
+		return new SapoVermelhoDecorator(new OvasVermelhasDecorator(new VitoriaRegiaComponent()));
 	}
 
 	@Override

@@ -11,11 +11,11 @@ public class EscurecerDecorator extends VitoriaRegiaDecorator{
 		this.aditivo = vr.getAditivo();
 	}
 
-	@Override
-	public void reset() {}
-
+	
 	@Override
 	public boolean isVirada() {
 		return true;
 	}
+
+
 }
