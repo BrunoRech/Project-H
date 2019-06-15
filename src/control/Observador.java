@@ -1,8 +1,14 @@
 package control;
 
+import control.state.GameStateInterface;
+
 //interface do observador com a declaração de cada método de notificação que será usado
 public interface Observador {
 
+	void setState(GameStateInterface state);
+	
+	void nextState();
+	
 	void notificarMudouTabuleiro();
 	
 	void notificarVentoIndisponivel();
@@ -18,6 +24,8 @@ public interface Observador {
 	void notificarJogadorPescou(int[] mao);
 	
 	void notificarSapoHabilitado();
+	
+	void notificarSapoDesabilitado();
 	
 	void notificarEmpateFlor(); //coachar
 
@@ -35,6 +43,8 @@ public interface Observador {
 	
 	void notificarVirarFlorHabilitada();
 	
+	void notificarVirarFlorDesabilitada();
+	
 	void notificarMovimentacaoHabilitada();
 	
 	void notificarMovimentacaoDesabilitada();
@@ -44,5 +54,11 @@ public interface Observador {
 	void notificarSelecaoTabuleiroReprovada();
 	
 	void notificarAdicionarFlorHabilitado();
+	
+	void notificarAdicionarFlorDesabilitado();
+	
+	void notificarDesfazerDesabilitado();
+	
+	void notificarRefazerDesabilitado();
 
 }

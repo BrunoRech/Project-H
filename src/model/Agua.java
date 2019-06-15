@@ -4,7 +4,7 @@ package model;
 public class Agua extends GameObject {
 
 	public Agua() {
-		super("imagens/water.png");
+		setImagem("imagens/water.png");
 	}
 
 }

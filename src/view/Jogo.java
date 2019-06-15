@@ -36,6 +36,9 @@ import control.command.MoverVitoriasRegiasParaCimaCommand;
 import control.command.MoverVitoriasRegiasParaDireitaCommand;
 import control.command.MoverVitoriasRegiasParaEsquerdaCommand;
 import control.command.VirarFlorCommand;
+import control.state.GameStateInterface;
+import control.state.SelecionarFloresState;
+import model.GameObject;
 
 //classe da view do game
 public class Jogo extends JFrame implements Observador {
@@ -87,7 +90,6 @@ public class Jogo extends JFrame implements Observador {
 			} else {
 				removeBorder();
 			}
-
 			this.setIcon((ImageIcon) value);
 
 			return this;
@@ -127,6 +129,7 @@ public class Jogo extends JFrame implements Observador {
 	private JButton btnFlor1;
 	private JButton btnFlor2;
 	private JButton btnFlor3;
+	private GameStateInterface state;
 	//se trata da imagem das flores na view somente
 	private ImageIcon florAmarela;
 	private ImageIcon florVermelha;
@@ -155,22 +158,12 @@ public class Jogo extends JFrame implements Observador {
 		controle.embaralharMontes();
 
 		pack();
-
-		jbVento.setEnabled(false);
-		jbMoverSapo.setEnabled(false);
-		jbMoverCima.setEnabled(false);
-		jbMoverBaixo.setEnabled(false);
-		jbMoverEsq.setEnabled(false);
-		jbMoverDir.setEnabled(false);
-		jbVirar.setEnabled(false);
-		jbAddFlor.setEnabled(false);
-		jbRefazer.setEnabled(false);
-		jbDesfazer.setEnabled(false);
-
+		
+		this.setState(new SelecionarFloresState(this));
 	}
 
 	private void initComponents() {
-		
+		System.out.println("aaa");
 		florAmarela = new ImageIcon("imagens/FlorAmarela.png");
 		florVermelha =  new ImageIcon("imagens/FlorVermelha.png");
 		
@@ -674,7 +667,7 @@ public class Jogo extends JFrame implements Observador {
 		florIcone2.setIcon(florAmarela);
 		florIcone3.setIcon(florAmarela);
 	}
-
+	
 	@Override
 	//troca a imagem das flores do painel da direita por flores vermelhas
 	public void notificarIconesVermelhos() {
@@ -682,6 +675,41 @@ public class Jogo extends JFrame implements Observador {
 		florIcone2.setIcon(florVermelha);
 		florIcone3.setIcon(florVermelha);
 		
+	}
+	
+	@Override
+	public void setState(GameStateInterface state) {
+		this.state = state;
+	}
+	
+	@Override
+	public void nextState() {
+		this.state.nextState();
+	}
+
+	@Override
+	public void notificarSapoDesabilitado() {
+		jbMoverSapo.setEnabled(false);
+	}
+
+	@Override
+	public void notificarVirarFlorDesabilitada() {
+		jbVirar.setEnabled(false);	
+	}
+
+	@Override
+	public void notificarAdicionarFlorDesabilitado() {
+		jbAddFlor.setEnabled(false);
+	}
+
+	@Override
+	public void notificarDesfazerDesabilitado() {
+		jbDesfazer.setEnabled(false);
+	}
+
+	@Override
+	public void notificarRefazerDesabilitado() {
+		jbRefazer.setEnabled(false);
 	}
 	
 

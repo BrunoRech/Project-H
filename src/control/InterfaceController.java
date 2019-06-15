@@ -7,6 +7,8 @@ public interface InterfaceController extends Observado{
 
 	void virarFlor(String action);
 	
+	void nextState();
+	
 	void atualizarIndexFlor(int x, int y);
 	
 	void inicializarTabuleiro() throws Exception;
@@ -14,6 +16,10 @@ public interface InterfaceController extends Observado{
 	Icon getPeca(int col, int row) throws Exception;
 
 	void addObservador(Observador obs);
+	
+	boolean tabuleiroCheio();
+	
+	void removerSaposTabuleiro();
 	
 	void removerFlorDaMao();
 
@@ -31,7 +37,7 @@ public interface InterfaceController extends Observado{
 	
 	void ventoDaPrimavera();
 	
-	void verificarPadroes();
+	void verificarPadroes(int estrategia);
 
 	void removerFlor(String action);
 

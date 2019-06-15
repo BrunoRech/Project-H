@@ -2,16 +2,16 @@ package model;
 
 //classe abstrata de da peça vitória régia
 public abstract class VitoriaRegia extends GameObject{
-	boolean hasFlor = false;
-	boolean isVirada = false;
-	//métodos abstratos
-	public abstract void adicionarFlorAmarela();
-	public abstract void adicionarFlorVermelha();
-	public abstract void reset();
-	public abstract void desvirar();
-	public abstract void virar();
-	public abstract String removerSapo();
-	public abstract void removerFlor();
+	
+	protected String nomeFlor,ovas,aditivo;
+	
+	private boolean hasFlor = false;
+	private boolean isVirada = false;
+	
+	protected boolean hasSapo = false;
+	protected String sapo;
+
+	public abstract VitoriaRegia reset();
 	
 	protected String corFlor = "";
 	
@@ -20,9 +20,11 @@ public abstract class VitoriaRegia extends GameObject{
 		return this.isVirada;
 	}
 	
-	public VitoriaRegia(String imagem) {
-		super(imagem);
+	@Override
+	public String getImagem() {
+		return "imagens/"+nomeFlor+ovas+aditivo+".png";
 	}
+
 	
 	public boolean hasFlor() {
 		return this.hasFlor;
@@ -31,6 +33,55 @@ public abstract class VitoriaRegia extends GameObject{
 	public String getFlorCor() {
 		return corFlor;
 	}
+	public boolean isHasSapo() {
+		return hasSapo;
+	}
+	public void setHasSapo(boolean hasSapo) {
+		this.hasSapo = hasSapo;
+	}
+	public String getSapo() {
+		return sapo;
+	}
+	public void setSapo(String sapo) {
+		this.sapo = sapo;
+	}
+	public boolean isHasFlor() {
+		return hasFlor;
+	}
+	public void setHasFlor(boolean hasFlor) {
+		this.hasFlor = hasFlor;
+	}
+	public void setVirada(boolean isVirada) {
+		this.isVirada = isVirada;
+	}
+	
+	
+	//
+	public String getNomeFlor() {
+		return nomeFlor;
+	}
+	public void setNomeFlor(String nomeFlor) {
+		this.nomeFlor = nomeFlor;
+	}
+	public String getOvas() {
+		return ovas;
+	}
+	public void setOvas(String ovas) {
+		this.ovas = ovas;
+	}
+	public String getAditivo() {
+		return aditivo;
+	}
+	public void setAditivo(String aditivo) {
+		this.aditivo = aditivo;
+	}
+	
+	
+	
+	
+	
+	
+	
 	
 	
 

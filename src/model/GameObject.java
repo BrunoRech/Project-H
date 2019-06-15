@@ -5,10 +5,6 @@ public abstract class GameObject {
 
 	private String imagem;
 	
-	public GameObject(String imagem) {
-		this.imagem = imagem;
-	}
-	
 	public String getImagem() {
 		return imagem;
 	}

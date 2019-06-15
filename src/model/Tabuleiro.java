@@ -35,7 +35,6 @@ public abstract class Tabuleiro {
 	public abstract void setVrOvasVermelha(int y, int x);
 	
 	public void acceptVisitor(TabuleiroVisitor visitor) {
-		visitor.verificarPadraoAmarelo(this);
-		visitor.verificarPadraoVermelho(this);
+		visitor.visitar(this);
 	}
 }
