@@ -1,32 +1,20 @@
 package control.visitor;
 
+import control.strategy.PatternFinderInterface;
 import model.Tabuleiro;
-import model.VitoriaRegia;
 
 public abstract class TabuleiroVisitor {
 
-	protected boolean amareloPontuou;
-	protected boolean vermelhoPontuou;
-
-	public abstract void verificarPadraoAmarelo(Tabuleiro tabuleiro);
-
-	public abstract void verificarPadraoVermelho(Tabuleiro tabuleiro);
-
-	public boolean aux(VitoriaRegia vr, String cor) {
-		if (vr.isHasFlor() && vr.getFlorCor().equalsIgnoreCase(cor)) {
-			return true;
-		}
-		return false;
-	}
-
-	public boolean amareloPontuou() {
-		return amareloPontuou;
-	}
-
-	public boolean vermelhoPontuou() {
-		return vermelhoPontuou;
+	
+	protected PatternFinderInterface finder;
+	
+	public TabuleiroVisitor(PatternFinderInterface finder) {
+		this.finder = finder;
 	}
 	
-	protected abstract boolean patternFinder(String cor,Tabuleiro tabuleiro);
-	public abstract int getPontuacao();
+	public abstract void visitar(Tabuleiro tabuleiro);
+
+	public int getPontuacao() {
+		return this.finder.getPontuacao();
+	}
 }

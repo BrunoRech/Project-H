@@ -7,21 +7,6 @@ public class Vr_Escura extends VitoriaRegia {
 		this.ovas = "";
 		this.aditivo = "";
 		this.nomeFlor = "Vr_Escura";
-		setImagem(this.getImagem());
-	}
-
-	public void adicionarFlorAmarela() {
-		setImagem("imagens/Vr_EscuraFlorAmarela.png");
-		setHasFlor(true);
-		corFlor = "amarela";
-	}
-
-	//@Override
-	public void adicionarFlorVermelha() {
-		setImagem("imagens/Vr_EscuraFlorVermelha.png");
-		setHasFlor(true);
-		corFlor = "vermelha";
-		
 	}
 
 	@Override
@@ -30,7 +15,6 @@ public class Vr_Escura extends VitoriaRegia {
 		this.ovas = "";
 		this.aditivo = "";
 		this.nomeFlor = "Vr_Escura";
-		setImagem(this.getImagem());
 		corFlor = "";
 		return this;
 	}

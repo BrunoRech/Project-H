@@ -15,6 +15,10 @@ public interface InterfaceController extends Observado{
 
 	void addObservador(Observador obs);
 	
+	boolean tabuleiroCheio();
+	
+	void removerSaposTabuleiro();
+	
 	void removerFlorDaMao();
 
 	void embaralharMontes();

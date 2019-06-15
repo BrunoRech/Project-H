@@ -9,10 +9,16 @@ public abstract class Flor extends GameObject{
 		
 	}
 	
+	public Flor() {}
+	
 	private int numero;
 	
 	public int getNumero() {
 		return this.numero;
+	}
+
+	public int size() {
+		return 1;
 	}
 
 }
