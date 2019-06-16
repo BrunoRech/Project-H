@@ -11,20 +11,15 @@ public InterfaceController controlador;
 	}
 	@Override
 	public void execute() {
-		controlador.virarFlor("execute");
+		controlador.virarFlor();
 		
 	}
 
 	@Override
 	public void undo() {
-		controlador.desvirarFlor("undo");
+		controlador.desvirarFlor();
 		
 	}
 
-	@Override
-	public void redo() {
-		controlador.virarFlor("redo");
-		
-	}
 
 }

@@ -23,10 +23,6 @@ public class MoverVitoriasRegiasParaBaixoCommand implements Command{
 	}
 
 	@Override
-	public void redo() {
-		controlador.moverPecasTabuleiroParaBaixo("redo");
-	}
-	@Override
 	public String toString() {
 		return "MoverVitoriasRegiasParaBaixoCommand";
 	}

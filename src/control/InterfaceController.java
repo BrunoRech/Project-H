@@ -5,9 +5,13 @@ import javax.swing.Icon;
 //interface do controlador com a declaração de cada método que será usado
 public interface InterfaceController extends Observado{
 
-	void virarFlor(String action);
+	void virarFlor();
 	
 	void nextState();
+	
+	void previousState();
+	
+	void sapoState();
 	
 	void atualizarIndexFlor(int x, int y);
 	
@@ -27,11 +31,11 @@ public interface InterfaceController extends Observado{
 	
 	void escolherFlor(int valor);
 	
-	void adicionarFlor(String action);
+	void adicionarFlor();
 	
 	void pescar(int quantidade);
 	
-	void adicionarSapo(String action);
+	void adicionarSapo();
 	
 	void limparMesa();
 	
@@ -39,11 +43,11 @@ public interface InterfaceController extends Observado{
 	
 	void verificarPadroes(int estrategia);
 
-	void removerFlor(String action);
+	void removerFlor();
 
-	void removerSapo(String action);
+	void removerSapo();
 
-	void desvirarFlor(String action);
+	void desvirarFlor();
 
 	void mudarJogador();
 	

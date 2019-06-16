@@ -9,11 +9,15 @@ public interface Observador {
 	
 	void nextState();
 	
+	void previousState();
+	
+	void reloadState();
+	
+	void sapoState();
+	
 	void notificarMudouTabuleiro();
 	
-	void notificarVentoIndisponivel();
-	
-	void notificarVentoDisponivel();
+	void notificarVentoDisponivel(boolean disponivel);
 	
 	void notificarIconesAmarelos();
 	
@@ -23,42 +27,19 @@ public interface Observador {
 	
 	void notificarJogadorPescou(int[] mao);
 	
-	void notificarSapoHabilitado();
-	
-	void notificarSapoDesabilitado();
+	void notificarSapoHabilitado(boolean disponivel);
 	
 	void notificarEmpateFlor(); //coachar
-
-	void notificarFlorAdicionada();
 	
-	void notificarExecute();
+	void notificarSelecaoFlorDisponivel(boolean disponivel);
 	
-	void notificarSapoAdicionado();
+	void notificarVirarFlorHabilitada(boolean disponivel);
 	
-	void notificarSelecaoFlorIndisponivel();
+	void notificarMovimentacaoHabilitada(boolean disponivel);
 	
-	void notificarSelecaoFlorDisponivel();
+	void notificarSelecaoTabuleiroAprovada(boolean disponivel);
 	
-	void notificarFlorVirada();
+	void notificarAdicionarFlorHabilitado(boolean disponivel);
 	
-	void notificarVirarFlorHabilitada();
-	
-	void notificarVirarFlorDesabilitada();
-	
-	void notificarMovimentacaoHabilitada();
-	
-	void notificarMovimentacaoDesabilitada();
-	
-	void notificarSelecaoTabuleiroAprovada();
-	
-	void notificarSelecaoTabuleiroReprovada();
-	
-	void notificarAdicionarFlorHabilitado();
-	
-	void notificarAdicionarFlorDesabilitado();
-	
-	void notificarDesfazerDesabilitado();
-	
-	void notificarRefazerDesabilitado();
-
+	void notificarDesfazerHabilitado(boolean disponivel);
 }

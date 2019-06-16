@@ -22,11 +22,6 @@ public class MoverVitoriasRegiasParaCimaCommand implements Command{
 	}
 
 	@Override
-	public void redo() {
-		controlador.moverPecasTabuleiroParaCima("redo");
-	}
-	
-	@Override
 	public String toString() {
 		return "MoverVitoriasRegiasParaCimaCommand";
 	}

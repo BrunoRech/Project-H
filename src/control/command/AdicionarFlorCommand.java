@@ -13,19 +13,13 @@ public class AdicionarFlorCommand implements Command{
 	
 	@Override
 	public void execute() {
-		controlador.adicionarFlor("execute");
+		controlador.adicionarFlor();
 		
 	}
 
 	@Override
 	public void undo() {
-		controlador.removerFlor("undo");
-	}
-
-	@Override
-	public void redo() {
-		controlador.adicionarFlor("redo");
-		
+		controlador.removerFlor();
 	}
 
 }

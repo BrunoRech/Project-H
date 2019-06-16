@@ -9,13 +9,7 @@ public class EscurecerDecorator extends VitoriaRegiaDecorator{
 		this.nomeFlor = "Vr_Escura";
 		this.ovas = vr.getOvas();
 		this.aditivo = vr.getAditivo();
+		setVirada(true);
 	}
-
-	
-	@Override
-	public boolean isVirada() {
-		return true;
-	}
-
 
 }

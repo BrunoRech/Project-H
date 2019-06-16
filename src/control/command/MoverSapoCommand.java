@@ -12,19 +12,14 @@ public class MoverSapoCommand implements Command{
 	}
 	@Override
 	public void execute() {
-		controlador.adicionarSapo("execute");
+		controlador.adicionarSapo();
 		
 	}
 
 	@Override
 	public void undo() {
-		controlador.removerSapo("undo");
+		controlador.removerSapo();
 		
-	}
-
-	@Override
-	public void redo() {
-		controlador.adicionarSapo("redo");
 	}
 
 }

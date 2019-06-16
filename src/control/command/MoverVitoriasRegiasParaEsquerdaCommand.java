@@ -21,11 +21,6 @@ public class MoverVitoriasRegiasParaEsquerdaCommand implements Command{
 		controlador.moverPecasTabuleiroParaDireita("undo");
 		
 	}
-
-	@Override
-	public void redo() {
-		controlador.moverPecasTabuleiroParaEsquerda("redo");
-	}
 	
 	@Override
 	public String toString() {

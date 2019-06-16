@@ -7,6 +7,7 @@ public class VitoriaRegiaComponent extends VitoriaRegia {
 		this.ovas = "";
 		this.aditivo = "";
 		this.nomeFlor = "Vr_Clara";
+		setVirada(false);
 	}
 	//retorna se a Vr possue um sapo em cima
 	public boolean hasSapo() {
@@ -14,6 +15,7 @@ public class VitoriaRegiaComponent extends VitoriaRegia {
 	}
 	@Override
 	public VitoriaRegia reset() {
+		setVirada(false);
 		setHasFlor(false);
 		this.hasSapo = false;
 		this.sapo = null;

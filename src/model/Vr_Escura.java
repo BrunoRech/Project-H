@@ -7,11 +7,13 @@ public class Vr_Escura extends VitoriaRegia {
 		this.ovas = "";
 		this.aditivo = "";
 		this.nomeFlor = "Vr_Escura";
+		setVirada(true);
 	}
 
 	@Override
 	public VitoriaRegia reset() {
 		setHasFlor(false);
+		setVirada(true);
 		this.ovas = "";
 		this.aditivo = "";
 		this.nomeFlor = "Vr_Escura";

@@ -30,27 +30,9 @@ public class CommandInvoker {
 		}
 
 	}
-	//função de refazer a ação
-	public void redo() {
-		if (undo.size() > 0) {
-			Command comm = undo.remove(undo.size() - 1);
-			comm.redo();
-			todos.add(comm);
-		}
-	}
-	//imprime o log dos comandos
-	public void imprimir() {
-
-		System.out.println("Log :");
-		for (Command comm : todos) {
-			System.out.println(" " + comm);
-		}
-
-	}
+	
 	//executa um comando específico na hora
 	public void execute(Command comm) {
-		System.out.println("execute " +comm.toString());
-		
 		todos.add(comm);
 		comm.execute();
 	}

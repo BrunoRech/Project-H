@@ -12,7 +12,6 @@ import control.abstractFactory.VersaoBasica;
 import control.builder.Director;
 import control.builder.TabuleiroBuilder;
 import control.builder.TabuleiroPadraoBuilder;
-import control.state.GameStateInterface;
 import control.state.SelecionarFloresState;
 import control.strategy.Finder1x4;
 import control.strategy.Finder2x2;
@@ -56,10 +55,7 @@ public class GameController implements InterfaceController {
 	private int executedX, executedY;
 	private int valorAmarelo = -1;
 	private int valorVermelho = -1;
-	private boolean ventoIsPressed;
-	private boolean teveEmpate;
-	private boolean moveuVr;
-	private boolean virouVr;
+	private boolean sapoMovido, houveUndo;
 	private String corSapoRemovido;
 	private String jogadorDaRodada = "amarelo";
 	private String vencedorDaRodada = "";
@@ -112,7 +108,6 @@ public class GameController implements InterfaceController {
 	public void inicializarTabuleiro() {
 		director.construir();
 		tabuleiro = this.builder.getTabuleiro();
-		ventoIsPressed = false;
 		indexX = -1;
 		indexY = -1;
 
@@ -179,7 +174,7 @@ public class GameController implements InterfaceController {
 	// @param valor, o valor da flor que o usuário escolheu dentre as 3
 	// disponíveis na mão de cada jogado
 	public void escolherFlor(int valor) {
-		teveEmpate = false;
+
 		if (jogadorDaRodada.equalsIgnoreCase("amarelo")) {
 			valorAmarelo = valor;
 		} else {
@@ -189,6 +184,8 @@ public class GameController implements InterfaceController {
 		if (valorAmarelo == -1 || valorVermelho == -1) {
 			mudarJogador();
 		} else {
+			sapoMovido = true;
+			houveUndo = false;
 			VitoriaRegia vr;
 			int[] pos = encontrarVrEscura();
 			if (valorAmarelo > valorVermelho) {
@@ -200,8 +197,8 @@ public class GameController implements InterfaceController {
 				vr = (VitoriaRegia) tabuleiro.getElementAt(pos[0], pos[1]);
 				tabuleiro.setElementAt(new FlorAmarelaDecorator(vr), pos[0], pos[1]);
 			} else {
+
 				System.out.println("empate");
-				teveEmpate = true;
 				monteAmarelo.add((FlorAmarela) spawner.spawnFlorAmarela(valorAmarelo));
 				monteVermelho.add((FlorVermelha) spawner.spawnFlorVermelha(valorVermelho));
 			}
@@ -213,10 +210,6 @@ public class GameController implements InterfaceController {
 			nextState();
 
 			// TODO empate
-//				if (teveEmpate) {
-//					obs.notificarEmpateFlor();
-//					obs.notificarVentoDisponivel();
-//				}
 
 		}
 
@@ -226,67 +219,49 @@ public class GameController implements InterfaceController {
 	// vira a flor escolhida "de cabeça para baixo"
 	// @param action, o tipo da ação, se é um execute, desfazer ou refazer cada
 	// um é tratado diferente
-	public void virarFlor(String action) {
+	public void virarFlor() {
 
 		try {
-			validarUndo(action);
 			if (conferirIndex()) {
+				VitoriaRegia vr = (VitoriaRegia) tabuleiro.getElementAt(indexY, indexX);
+				if (!vr.isVirada() || vr.isHasFlor()) {
 
-				if (tabuleiro.getElementAt(indexY, indexX).getClass() != Agua.class
-						&& tabuleiro.getElementAt(indexY, indexX).getClass() != Vr_Escura.class) {
-					VitoriaRegia vr = (VitoriaRegia) tabuleiro.getElementAt(indexY, indexX);
-
-					if (vr.isHasFlor()) {
-						throw new CampoInvalidoException();
-					} else {
-						if (vr.isHasSapo()) {
-
-							corSapoRemovido = vr.getSapo();
-							vr = ((VitoriaRegiaDecorator) tabuleiro.getElementAt(indexY, indexX)).getVr();
-
-							notificarSapoRemovido();
-						}
-						tabuleiro.setElementAt(new EscurecerDecorator(vr), indexY, indexX);
-						notificarMudancaTabuleiro();
-						virouVr = true;
-						validarExecute(action);
-						comecarNovaRodada();
-						for (Observador obs : observadores) {
-							obs.notificarFlorVirada();
-						}
+					if (vr.isHasSapo()) {
+						corSapoRemovido = vr.getSapo();
+						vr = ((VitoriaRegiaDecorator) tabuleiro.getElementAt(indexY, indexX)).getVr();
+						sapoMovido = false;
+						sapoState();
 					}
+					tabuleiro.setElementAt(new EscurecerDecorator(vr), indexY, indexX);
+					executedX = indexX;
+					executedY = indexY;
+					notificarMudancaTabuleiro();
+					comecarNovaRodada();
+
 				} else {
 					throw new CampoInvalidoException();
 				}
 			}
 		} catch (NenhumCampoSelecionadoException | CampoInvalidoException e) {
-			for (Observador obs : observadores) {
-				obs.notificarVirarFlorHabilitada();
-				obs.notificarSelecaoTabuleiroAprovada();
-			}
+			reloadState();
 		}
 
 	}
 
 	// inicia uma nova rodada TODO
 	private void comecarNovaRodada() {
-		ventoIsPressed = false;
-
-		try {
-			verificarPadroes(1);
-			nextState();
-//					for (Observador obs : observadores) {
-//						obs.notificarSelecaoFlorDisponivel();
-//						obs.notificarSelecaoTabuleiroReprovada();
-//					}
-//			virouVr = false;
-//			moveuVr = false;
-
-			if (ladoAmarelo.size() == 0 && ladoVermelho.size() == 0) {
-				limparMesa();
-				throw new SemFloresNoMonteException();
+		if (sapoMovido && !houveUndo) {
+			try {
+				verificarPadroes(1);
+				nextState();
+				if (ladoAmarelo.size() == 0 && ladoVermelho.size() == 0) {
+					limparMesa();
+					throw new SemFloresNoMonteException();
+				}
+			} catch (Exception e) {
 			}
-		} catch (Exception e) {
+		} else if (houveUndo) {
+			previousState();
 		}
 	}
 
@@ -298,65 +273,45 @@ public class GameController implements InterfaceController {
 			this.indexX = x;
 			this.indexY = y;
 		}
-		System.out.println(tabuleiro.getElementAt(y, x).getImagem());
-	}
-
-	// notifica a flor adicionada na view
-	public void notificarFlorAdicionada() {
-		for (Observador obs : observadores)
-			obs.notificarFlorAdicionada();
-	}
-
-	// notifica o sapo adicionado na view
-	public void notificarSapoAdicionado() {
-		validarVento();
-		for (Observador obs : observadores) {
-			obs.notificarSapoAdicionado();
-			obs.notificarMudouTabuleiro();
-		}
 	}
 
 	// confere o index para ver se ele é válido
 	// @return retorna se o index selecionado pelo usuário é válido
-	public boolean conferirIndex() throws NenhumCampoSelecionadoException {
+	public boolean conferirIndex() throws NenhumCampoSelecionadoException, CampoInvalidoException {
 		if (this.indexX == -1 || indexY == -1) {
 			throw new NenhumCampoSelecionadoException();
-
-		} else {
-			return true;
+		} else if (tabuleiro.getElementAt(indexY, indexX).getClass() == Agua.class) {
+			throw new CampoInvalidoException();
 		}
+		return true;
 	}
 
 	@Override
 	// adiciona uma flor em cima de uma vitória régia se ela estiver livre
 	// @param action, o tipo da ação, se é um execute, desfazer ou refazer cada
 	// um é tratado diferente
-	public void adicionarFlor(String action) {
+	public void adicionarFlor() {
 		try {
-			validarUndo(action);
 			if (conferirIndex()) {
 				VitoriaRegia vr = (VitoriaRegia) tabuleiro.getElementAt(indexY, indexX);
 
-				if (!vr.hasFlor()) {
+				if (!vr.hasFlor() && !vr.isVirada()) {
 					if (vr.isHasSapo()) {
 						corSapoRemovido = vr.getSapo();
 						vr = ((VitoriaRegiaDecorator) tabuleiro.getElementAt(indexY, indexX)).getVr();
-						notificarSapoRemovido();
+						sapoMovido = false;
+						sapoState();
 					} else {
 						nextState();
-						// for (Observador obs : observadores) {
-						// obs.notificarVentoDisponivel();
-
-						// }
 					}
 					if (vencedorDaRodada.equalsIgnoreCase("amarelo")) {
 						tabuleiro.setElementAt(new FlorAmarelaDecorator(vr), indexY, indexX);
 					} else if (vencedorDaRodada.equalsIgnoreCase("vermelho")) {
 						tabuleiro.setElementAt(new FlorVermelhaDecorator(vr), indexY, indexX);
 					}
-					notificarFlorAdicionada();
-					validarExecute(action);
-					validarVento();
+					executedX = indexX;
+					executedY = indexY;
+					houveUndo = false;
 				} else {
 					throw new CampoInvalidoException();
 				}
@@ -364,11 +319,7 @@ public class GameController implements InterfaceController {
 				notificarMudancaTabuleiro();
 			}
 		} catch (NenhumCampoSelecionadoException | CampoInvalidoException e) {
-			e.printStackTrace();
-			for (Observador obs : observadores) {
-				obs.notificarAdicionarFlorHabilitado();
-				obs.notificarSelecaoTabuleiroAprovada();
-			}
+			reloadState();
 		}
 	}
 
@@ -376,13 +327,10 @@ public class GameController implements InterfaceController {
 	// adiciona um sapo em cima de uma vitória régia se ela estiver livre
 	// @param action, o tipo da ação, se é um execute, desfazer ou refazer cada
 	// um é tratado diferente
-	public void adicionarSapo(String action) {
+	public void adicionarSapo() {
 		try {
-			validarUndo(action);
 
-			if (conferirIndex() && (tabuleiro.getElementAt(indexY, indexX).getClass() == VitoriaRegiaComponent.class)
-					|| tabuleiro.getElementAt(indexY, indexX).getClass() == OvasAmarelasDecorator.class
-					|| tabuleiro.getElementAt(indexY, indexX).getClass() == OvasVermelhasDecorator.class) {
+			if (conferirIndex()) {
 				VitoriaRegia vr = (VitoriaRegia) tabuleiro.getElementAt(indexY, indexX);
 				if (!vr.isHasSapo() && !vr.hasFlor() && !vr.isVirada()) {
 					if (corSapoRemovido.equalsIgnoreCase("amarelo")) {
@@ -390,20 +338,18 @@ public class GameController implements InterfaceController {
 					} else if (corSapoRemovido.equalsIgnoreCase("vermelho")) {
 						tabuleiro.setElementAt(new SapoVermelhoDecorator(vr), indexY, indexX);
 					}
-					notificarSapoAdicionado();
-					validarExecute(action);
-					validarVento();
+					sapoMovido = true;
+					houveUndo = false;
+					comecarNovaRodada();
+					notificarMudancaTabuleiro();
+
 				} else {
 					throw new CampoInvalidoException();
 				}
 
 			}
 		} catch (NenhumCampoSelecionadoException | CampoInvalidoException e) {
-			e.printStackTrace();
-			for (Observador obs : observadores) {
-				obs.notificarSapoHabilitado();
-				obs.notificarSelecaoTabuleiroAprovada();
-			}
+			reloadState();
 		}
 
 	}
@@ -427,13 +373,10 @@ public class GameController implements InterfaceController {
 				}
 
 			}
-
-			for (Observador obs : observadores) {
-				obs.notificarMudouTabuleiro();
-				obs.notificarSelecaoFlorDisponivel();
-			}
-
-			embaralharMontes();
+		}
+		embaralharMontes();
+		for (Observador obs : observadores) {
+			obs.setState(new SelecionarFloresState(obs));
 		}
 
 	}
@@ -441,20 +384,11 @@ public class GameController implements InterfaceController {
 	@Override
 	// notifica a view que começou o vento da primavera
 	public void ventoDaPrimavera() {
-		ventoIsPressed = true;
 		if (tabuleiroCheio()) {
 			removerSaposTabuleiro();
 		}
 		verificarPadroes(1);
 		nextState();
-		// for (Observador obs : observadores) {
-
-//			obs.notificarMovimentacaoHabilitada();
-//			obs.notificarSelecaoTabuleiroAprovada();
-		// if (!teveEmpate) { TODO
-		// obs.notificarVirarFlorHabilitada();
-		// }
-		// }
 	}
 
 	@Override
@@ -482,16 +416,6 @@ public class GameController implements InterfaceController {
 		for (Observador obs : observadores) {
 			obs.notificarMudouTabuleiro();
 		}
-	}
-
-	// notifica a view que um sapo foi removido de uma vitória régia
-	private void notificarSapoRemovido() {
-		for (Observador obs : observadores) {
-			obs.notificarSapoHabilitado();
-			obs.notificarSelecaoTabuleiroAprovada();
-			obs.notificarVentoIndisponivel();
-		}
-
 	}
 
 	// encontra uma vitória régia escura vaga para adicionar a flor do perdedor da
@@ -526,22 +450,22 @@ public class GameController implements InterfaceController {
 
 	// método utilizado para evitar que o botão do vento fique disponível depois
 	// de um redo e quebre o jogo
-	private void validarVento() {
-		if (ventoIsPressed) {
-			for (Observador obs : observadores)
-				obs.notificarVentoIndisponivel();
-		} else {
-			for (Observador obs : observadores)
-				obs.notificarVentoDisponivel();
-		}
-	}
+//	private void validarVento() {
+//		if (ventoIsPressed) {
+//			for (Observador obs : observadores)
+//				obs.notificarVentoIndisponivel();
+//		} else {
+//			for (Observador obs : observadores)
+//				obs.notificarVentoDisponivel();
+//		}
+//	}
 
 	@Override
 	// método que verifica as posições das peças no tabuleiro para aplicar as
 	// pontuações no fim de cada rodada
 	public void verificarPadroes(int estrategia) {
 		boolean done = false;
-
+		
 		switch (estrategia) {
 		case 1:
 			visitor.setStrategy(new FinderDiagonal5());
@@ -560,7 +484,8 @@ public class GameController implements InterfaceController {
 			break;
 		}
 		tabuleiro.acceptVisitor(visitor);
-
+		// TODO limpar mesa
+		// TODO verificar se algu�m ganhou
 		if (visitor.amareloPontuou()) {
 			pontuacaoAmarelo += visitor.getPontuacao();
 		} else if (visitor.vermelhoPontuou()) {
@@ -582,48 +507,45 @@ public class GameController implements InterfaceController {
 	// remove a flor de uma vitória régia
 	// @param action, o tipo da ação, se é um execute, desfazer ou refazer cada
 	// um é tratado diferente
-	public void removerFlor(String action) {
-		validarUndo(action);
-		VitoriaRegia vr = (VitoriaRegia) tabuleiro.getElementAt(indexY, indexX);
+	public void removerFlor() {
+		VitoriaRegia vr = ((VitoriaRegia) tabuleiro.getElementAt(executedY, executedX)).getVr();
 
 		if (vr.getClass() == OvasAmarelasDecorator.class || vr.getClass() == OvasVermelhasDecorator.class) {
 			if (corSapoRemovido.equalsIgnoreCase("vermelho")) {
-				tabuleiro.setElementAt(new SapoVermelhoDecorator(vr), indexY, indexX);
+				System.out.println("vermelho");
+				tabuleiro.setElementAt(new SapoVermelhoDecorator(vr), executedY, executedX);
 			} else if (corSapoRemovido.equalsIgnoreCase("amarelo")) {
+				System.out.println("amarelo");
 				vr = new SapoAmareloDecorator(vr);
-				tabuleiro.setElementAt(new SapoAmareloDecorator(vr), indexY, indexX);
+				tabuleiro.setElementAt(new SapoAmareloDecorator(vr), executedY, executedX);
 			}
-			for (Observador obs : observadores) {
-				obs.notificarSapoAdicionado();
 
-			}
 		} else {
-			tabuleiro.setElementAt(((VitoriaRegiaDecorator) vr).getVr(), indexY, indexX);
+			tabuleiro.setElementAt(vr, executedY, executedX);
 		}
-
-		for (Observador obs : observadores) {
-			obs.notificarAdicionarFlorHabilitado();
-			obs.notificarSelecaoTabuleiroAprovada();
-			obs.notificarMudouTabuleiro();
-			obs.notificarVentoIndisponivel();
-		}
+		houveUndo = true;
 		notificarMudancaTabuleiro();
+		previousState();
+
 	}
 
 	@Override
 	// remove um sapo de uma vitória régia
 	// @param action, o tipo da ação, se é um execute, desfazer ou refazer cada
 	// um é tratado diferente
-	public void removerSapo(String action) {
-		validarUndo(action);
-		VitoriaRegia vr = (VitoriaRegia) tabuleiro.getElementAt(indexY, indexX);
-		corSapoRemovido = vr.getSapo();
-		vr = ((VitoriaRegiaDecorator) vr).getVr();
-		tabuleiro.setElementAt(vr, indexY, indexX);
-		for (Observador obs : observadores) {
-			obs.notificarMudouTabuleiro();
-			obs.notificarSapoHabilitado();
-			obs.notificarVentoIndisponivel();
+	public void removerSapo() {
+		try {
+			if (conferirIndex()) {
+				VitoriaRegia vr = (VitoriaRegia) tabuleiro.getElementAt(executedY, executedX);
+				corSapoRemovido = vr.getSapo();
+				vr = ((VitoriaRegiaDecorator) vr).getVr();
+				tabuleiro.setElementAt(vr, executedY, executedX);
+				notificarMudancaTabuleiro();
+				houveUndo = true;
+				previousState();
+			}
+		} catch (Exception e) {
+			reloadState();
 		}
 	}
 
@@ -631,14 +553,17 @@ public class GameController implements InterfaceController {
 	// desvira uma flor que inicialmente tinha a face virada para cima
 	// @param action, o tipo da ação, se é um execute, desfazer ou refazer cada
 	// um é tratado diferente
-	public void desvirarFlor(String action) {
-		validarUndo(action);
-		VitoriaRegia vr = (VitoriaRegia) tabuleiro.getElementAt(indexY, indexX);
-		vr = ((VitoriaRegiaDecorator) vr).getVr();
-		tabuleiro.setElementAt(vr, indexY, indexX);
-		for (Observador obs : observadores) {
-			obs.notificarMudouTabuleiro();
-			obs.notificarVirarFlorHabilitada();
+	public void desvirarFlor() {
+		try {
+			if (conferirIndex()) {
+				VitoriaRegia vr = (VitoriaRegia) tabuleiro.getElementAt(executedY, executedX);
+				vr = ((VitoriaRegiaDecorator) vr).getVr();
+				tabuleiro.setElementAt(vr, executedY, executedX);
+				notificarMudancaTabuleiro();
+				previousState();
+			}
+		} catch (Exception e) {
+			reloadState();
 		}
 	}
 
@@ -703,13 +628,10 @@ public class GameController implements InterfaceController {
 				validarExecute(action);
 
 			}
-			validarAction(action);
 			notificarMudancaTabuleiro();
-			moveuVr = true;
 			comecarNovaRodada();
 		} catch (MovimentoInvalidoException e) {
-			for (Observador obs : observadores)
-				obs.notificarMovimentacaoHabilitada();
+			reloadState();
 		}
 	}
 
@@ -743,13 +665,11 @@ public class GameController implements InterfaceController {
 				validarExecute(action);
 
 			}
-			validarAction(action);
+
 			notificarMudancaTabuleiro();
-			moveuVr = true;
 			comecarNovaRodada();
 		} catch (MovimentoInvalidoException e) {
-			for (Observador obs : observadores)
-				obs.notificarMovimentacaoHabilitada();
+			reloadState();
 		}
 	}
 
@@ -782,13 +702,11 @@ public class GameController implements InterfaceController {
 				indexY = coordY;
 				validarExecute(action);
 			}
-			validarAction(action);
+
 			notificarMudancaTabuleiro();
-			moveuVr = true;
 			comecarNovaRodada();
 		} catch (MovimentoInvalidoException e) {
-			for (Observador obs : observadores)
-				obs.notificarMovimentacaoHabilitada();
+			reloadState();
 		}
 	}
 
@@ -822,57 +740,35 @@ public class GameController implements InterfaceController {
 				validarExecute(action);
 			}
 
-			validarAction(action);
 			notificarMudancaTabuleiro();
-			moveuVr = true;
 			comecarNovaRodada();
 
 		} catch (MovimentoInvalidoException e) {
-			for (Observador obs : observadores)
-				obs.notificarMovimentacaoHabilitada();
-		}
-	}
-
-	/*
-	 * verifica se o comando está sendo executado pela primeira vez ou é um
-	 * undo/redo de outro comando e toma as devidas providências apenas utilizado
-	 * nos métodos de movimento das vitórias régias
-	 * 
-	 * @param action, o tipo da ação, se é um execute, desfazer ou refazer cada
-	 * um é tratado diferente
-	 */
-	private void validarAction(String action) {
-		if (action.equalsIgnoreCase("undo")) {
-			for (Observador obs : observadores)
-				obs.notificarMovimentacaoHabilitada();
-		} else if (action.equalsIgnoreCase("redo")) {
-			for (Observador obs : observadores)
-				obs.notificarMovimentacaoDesabilitada();
-		} else if (action.equalsIgnoreCase("execute")) {
-			for (Observador obs : observadores)
-				obs.notificarExecute();
+			reloadState();
 		}
 	}
 
 	@Override
-	// guarda a coordenada da ação caso o usuário peça um undo
-	// @param action, o tipo da ação, se é um execute ou refazer
-	public void validarExecute(String action) {
-		if (action.equalsIgnoreCase("execute") || action.equalsIgnoreCase("redo")) {
-			executedX = indexX;
-			executedY = indexY;
-		}
-
-	}
-
-	@Override
-	// caso o comando seja um undo ele utiliza as coordenadas da ultima ação do
+	// caso o comando seja um undo ele utiliza as coordenadas da ultima a��o do
 	// ultimo comando
-	// @param action, o tipo da ação, se é um refazer
+	// @param action, o tipo da a��o, se � um refazer
 	public void validarUndo(String action) {
 		if (action.equalsIgnoreCase("undo")) {
 			indexX = executedX;
 			indexY = executedY;
+			houveUndo = true;
+		}
+
+	}
+
+	@Override
+	// guarda a coordenada da a��o caso o usu�rio pe�a um undo
+	// @param action, o tipo da a��o, se � um execute ou refazer
+	public void validarExecute(String action) {
+		if (action.equalsIgnoreCase("execute")) {
+			executedX = indexX;
+			executedY = indexY;
+			houveUndo = false;
 		}
 
 	}
@@ -898,7 +794,6 @@ public class GameController implements InterfaceController {
 
 	@Override
 	public boolean tabuleiroCheio() {
-		System.out.println(ladoAmarelo.size() + "  " + ladoVermelho.size());
 		return (ladoAmarelo.size() == 1 && ladoVermelho.size() == 1);
 	}
 
@@ -916,6 +811,26 @@ public class GameController implements InterfaceController {
 	public void nextState() {
 		for (Observador obs : observadores) {
 			obs.nextState();
+		}
+	}
+
+	@Override
+	public void sapoState() {
+		for (Observador obs : observadores) {
+			obs.sapoState();
+		}
+	}
+
+	@Override
+	public void previousState() {
+		for (Observador obs : observadores) {
+			obs.previousState();
+		}
+	}
+
+	public void reloadState() {
+		for (Observador obs : observadores) {
+			obs.reloadState();
 		}
 	}
 

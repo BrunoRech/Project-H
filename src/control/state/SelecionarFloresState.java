@@ -6,22 +6,36 @@ public class SelecionarFloresState extends GameStateInterface{
 
 	public SelecionarFloresState(Observador view) {
 		super(view);
-		System.out.println("Selecionar Flores state");
-		this.view.notificarSelecaoFlorDisponivel();
-		this.view.notificarVentoIndisponivel();
-		this.view.notificarMovimentacaoDesabilitada();
-		this.view.notificarSapoDesabilitado();
-		this.view.notificarVirarFlorDesabilitada();
-		this.view.notificarAdicionarFlorDesabilitado();
-		this.view.notificarDesfazerDesabilitado();
-		this.view.notificarRefazerDesabilitado();
-		this.view.notificarSelecaoTabuleiroReprovada();
-		
+		loadState();
+	}
+
+	public SelecionarFloresState(Observador view, GameStateInterface state) {
+		super(view, state);
+		loadState();
 	}
 
 	@Override
 	public void nextState() {
-		this.view.setState(new PosicionarState(this.view));
+		this.view.setState(new PosicionarFlorState(this.view,this));
+	}
+
+	@Override
+	public void loadState() {
+		System.out.println("Selecionar Flores state");
+		this.view.notificarSelecaoFlorDisponivel(true);
+		this.view.notificarVentoDisponivel(false);
+		this.view.notificarMovimentacaoHabilitada(false);
+		this.view.notificarSapoHabilitado(false);
+		this.view.notificarVirarFlorHabilitada(false);
+		this.view.notificarAdicionarFlorHabilitado(false);
+		this.view.notificarDesfazerHabilitado(true);
+		this.view.notificarSelecaoTabuleiroAprovada(false);
+		
+	}
+
+	@Override
+	public String toString() {
+		return "SelecionarFlores";
 	}
 
 }

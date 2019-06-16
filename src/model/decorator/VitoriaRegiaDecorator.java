@@ -16,6 +16,7 @@ public abstract class VitoriaRegiaDecorator extends VitoriaRegia{
 		return vr.getFlorCor();
 	}
 	
+	@Override
 	public VitoriaRegia getVr() {
 		return vr;
 	}

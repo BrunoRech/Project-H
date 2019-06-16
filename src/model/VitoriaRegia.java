@@ -25,6 +25,9 @@ public abstract class VitoriaRegia extends GameObject{
 		return "imagens/"+nomeFlor+ovas+aditivo+".png";
 	}
 
+	public VitoriaRegia getVr() {
+		return this;
+	}
 	
 	public boolean hasFlor() {
 		return this.hasFlor;

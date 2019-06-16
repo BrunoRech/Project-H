@@ -37,8 +37,8 @@ import control.command.MoverVitoriasRegiasParaDireitaCommand;
 import control.command.MoverVitoriasRegiasParaEsquerdaCommand;
 import control.command.VirarFlorCommand;
 import control.state.GameStateInterface;
+import control.state.MoverSapoState;
 import control.state.SelecionarFloresState;
-import model.GameObject;
 
 //classe da view do game
 public class Jogo extends JFrame implements Observador {
@@ -115,7 +115,6 @@ public class Jogo extends JFrame implements Observador {
 	private JButton jbAddFlor;
 	private JButton jbVento;
 	private JButton jbDesfazer;
-	private JButton jbRefazer;
 	private JButton jbProx;
 	private JPanel opcoesFlores;
 	private JPanel pontuacao;
@@ -160,10 +159,10 @@ public class Jogo extends JFrame implements Observador {
 		pack();
 		
 		this.setState(new SelecionarFloresState(this));
+		notificarDesfazerHabilitado(false);
 	}
 
 	private void initComponents() {
-		System.out.println("aaa");
 		florAmarela = new ImageIcon("imagens/FlorAmarela.png");
 		florVermelha =  new ImageIcon("imagens/FlorVermelha.png");
 		
@@ -286,31 +285,12 @@ public class Jogo extends JFrame implements Observador {
 
 		jpOpcoes.add(jbAddFlor);
 
-		jbRefazer = new JButton("Refazer");
-		jbRefazer.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent event) {
-				try {
-					ci.redo();
-					jbRefazer.setEnabled(false);
-					jbDesfazer.setEnabled(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-					JOptionPane.showMessageDialog(null, e.toString());
-				}
-			}
-		});
-
-		jpOpcoes.add(jbRefazer);
-
 		jbMoverCima = new JButton("Mover Acima");
 		jbMoverCima.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent event) {
 				try {
-					desativarMovimento();
 					ci.execute(new MoverVitoriasRegiasParaCimaCommand(controle));
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -327,7 +307,6 @@ public class Jogo extends JFrame implements Observador {
 			@Override
 			public void actionPerformed(ActionEvent event) {
 				try {
-					desativarMovimento();
 					ci.execute(new MoverVitoriasRegiasParaBaixoCommand(controle));
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -344,7 +323,6 @@ public class Jogo extends JFrame implements Observador {
 			@Override
 			public void actionPerformed(ActionEvent event) {
 				try {
-					desativarMovimento();
 					ci.execute(new MoverVitoriasRegiasParaEsquerdaCommand(controle));
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -361,7 +339,6 @@ public class Jogo extends JFrame implements Observador {
 			@Override
 			public void actionPerformed(ActionEvent event) {
 				try {
-					desativarMovimento();
 					ci.execute(new MoverVitoriasRegiasParaDireitaCommand(controle));
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -379,8 +356,7 @@ public class Jogo extends JFrame implements Observador {
 			public void actionPerformed(ActionEvent event) {
 				try {
 					ci.undo();
-					jbRefazer.setEnabled(true);
-					jbDesfazer.setEnabled(false);
+					notificarDesfazerHabilitado(false);
 				} catch (Exception e) {
 					e.printStackTrace();
 					JOptionPane.showMessageDialog(null, e.toString());
@@ -388,7 +364,7 @@ public class Jogo extends JFrame implements Observador {
 			}
 		});
 
-		jpOpcoes2.add(jbDesfazer);
+		jpOpcoes.add(jbDesfazer);
 
 		jbProx = new JButton("Trocar Jogador");
 		jbProx.addActionListener(new ActionListener() {
@@ -396,7 +372,9 @@ public class Jogo extends JFrame implements Observador {
 			@Override
 			public void actionPerformed(ActionEvent event) {
 				try {
-					controle.mudarJogador();
+					//controle.mudarJogador();
+					controle.limparMesa();
+
 				} catch (Exception e) {
 					e.printStackTrace();
 					JOptionPane.showMessageDialog(null, e.toString());
@@ -514,20 +492,6 @@ public class Jogo extends JFrame implements Observador {
 
 	}
 
-	//desativa os botões de movimento das vitórias régias
-	private void desativarMovimento() {
-		jbMoverCima.setEnabled(false);
-		jbMoverBaixo.setEnabled(false);
-		jbMoverEsq.setEnabled(false);
-		jbMoverDir.setEnabled(false);
-	}
-	//ativa o botão de desfazer
-	//desativa o botão de refazer
-	private void acao() {
-		jbDesfazer.setEnabled(true);
-		jbRefazer.setEnabled(false);
-	}
-
 	@Override
 	//muda o tabuleiro
 	public void notificarMudouTabuleiro() {
@@ -549,115 +513,55 @@ public class Jogo extends JFrame implements Observador {
 	}
 
 	@Override
-	//ativa o botão de mover o sapo
-	public void notificarSapoHabilitado() {
-		jbMoverSapo.setEnabled(true);
-	}
-
-	@Override
 	public void notificarEmpateFlor() {
 		// TODO tela do coachar depois na segunda entrega
 		
 		// JOptionPane.showMessageDialog(null, "O tal do coachar vai aqui depois");
-		jbAddFlor.setEnabled(false);;
-	}
-
-	@Override
-	//desativa os botões de seleção das flores do painel direito 
-	public void notificarSelecaoFlorIndisponivel() {
-		btnFlor1.setEnabled(false);
-		btnFlor2.setEnabled(false);
-		btnFlor3.setEnabled(false);
+		
 	}
 
 	@Override
 	//ativa  os botões de seleção das flores do painel direito 
-	public void notificarSelecaoFlorDisponivel() {
-		btnFlor1.setEnabled(true);
-		btnFlor2.setEnabled(true);
-		btnFlor3.setEnabled(true);
+	public void notificarSelecaoFlorDisponivel(boolean disponivel) {
+		btnFlor1.setEnabled(disponivel);
+		btnFlor2.setEnabled(disponivel);
+		btnFlor3.setEnabled(disponivel);
 
-	}
-
-	@Override
-	//desativa o botão de adicionar flor no campo
-	public void notificarFlorAdicionada() {
-		jbAddFlor.setEnabled(false);
-		acao();
-	}
-
-	@Override
-	//desativa o botão de mover o sapo pelo campo
-	public void notificarSapoAdicionado() {
-		jbMoverSapo.setEnabled(false);
-		acao();
-	}
-
-	@Override
-	//desativa o botão de virar uma vitória régia
-	public void notificarFlorVirada() {
-		jbVirar.setEnabled(false);
-		acao();
 	}
 
 	@Override
 	//ativa o botão de virar a vitória régia
-	public void notificarVirarFlorHabilitada() {
-		jbVirar.setEnabled(true);
+	public void notificarVirarFlorHabilitada(boolean disponivel) {
+		jbVirar.setEnabled(disponivel);
 	}
 
 	@Override
 	//ativa os botões de movimento das vitórias régias
-	public void notificarMovimentacaoHabilitada() {
-		jbMoverCima.setEnabled(true);
-		jbMoverBaixo.setEnabled(true);
-		jbMoverEsq.setEnabled(true);
-		jbMoverDir.setEnabled(true);
+	public void notificarMovimentacaoHabilitada(boolean disponivel) {
+		jbMoverCima.setEnabled(disponivel);
+		jbMoverBaixo.setEnabled(disponivel);
+		jbMoverEsq.setEnabled(disponivel);
+		jbMoverDir.setEnabled(disponivel);
 
 	}
 
 	@Override
 	//permite o usuário selecionar a posição da sua próxima jogada no tabuleiro
-	public void notificarSelecaoTabuleiroAprovada() {
-		tabuleiro.setCellSelectionEnabled(true);
-		cellSelection = true;
-	}
-
-	@Override
-	//não permite o usuário selecionar a posição da sua próxima jogada no tabuleiro
-	public void notificarSelecaoTabuleiroReprovada() {
-		tabuleiro.setCellSelectionEnabled(false);
-		cellSelection = false;
+	public void notificarSelecaoTabuleiroAprovada(boolean disponivel) {
+		tabuleiro.setCellSelectionEnabled(disponivel);
+		cellSelection = disponivel;
 	}
 
 	@Override
 	//ativa o botão de adicionar uma flor no campo selecionado
-	public void notificarAdicionarFlorHabilitado() {
-		jbAddFlor.setEnabled(true);
-	}
-	
-	@Override
-	//desativa o botão do vento da primavera
-	public void notificarVentoIndisponivel() {
-		jbVento.setEnabled(false);
+	public void notificarAdicionarFlorHabilitado(boolean disponivel) {
+		jbAddFlor.setEnabled(disponivel);
 	}
 
 	@Override
 	//ativa o botão do vento da primavera
-	public void notificarVentoDisponivel() {
-		jbVento.setEnabled(true);
-	}
-
-	@Override
-	//desativa o movimento das vitórias régias
-	public void notificarMovimentacaoDesabilitada() {
-		desativarMovimento();	
-	}
-
-	@Override
-	//desativa o botão de refazer e ativa o botão de desfazer
-	public void notificarExecute() {
-		acao();	
+	public void notificarVentoDisponivel(boolean disponivel) {
+		jbVento.setEnabled(disponivel);
 	}
 
 	@Override
@@ -688,28 +592,28 @@ public class Jogo extends JFrame implements Observador {
 	}
 
 	@Override
-	public void notificarSapoDesabilitado() {
-		jbMoverSapo.setEnabled(false);
+	public void sapoState() {
+		this.setState(new MoverSapoState(this, this.state));
 	}
 
 	@Override
-	public void notificarVirarFlorDesabilitada() {
-		jbVirar.setEnabled(false);	
+	public void previousState() {
+		this.state.previousState();
 	}
 
 	@Override
-	public void notificarAdicionarFlorDesabilitado() {
-		jbAddFlor.setEnabled(false);
+	public void notificarDesfazerHabilitado(boolean disponivel) {
+		jbDesfazer.setEnabled(disponivel);
 	}
 
 	@Override
-	public void notificarDesfazerDesabilitado() {
-		jbDesfazer.setEnabled(false);
+	public void reloadState() {
+		this.state.loadState();	
 	}
 
 	@Override
-	public void notificarRefazerDesabilitado() {
-		jbRefazer.setEnabled(false);
+	public void notificarSapoHabilitado(boolean disponivel) {
+		jbMoverSapo.setEnabled(disponivel);
 	}
 	
 
