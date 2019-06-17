@@ -13,16 +13,17 @@ public class MoverSapoState extends GameStateInterface {
 		super(view, state);
 		loadState();
 	}
-
-	// passar o prox state
+	
 	@Override
 	public void nextState() {
-		//TODO
 		switch (antecessor.toString()) {
 		case "AdicionarFlores":
 			this.view.setState(new VentoDaPrimaveraState(view, this));
 			break;
 		case "Virar":
+			this.view.setState(new SelecionarFloresState(view, this));
+			break;
+		case "Sapo":
 			this.view.setState(new SelecionarFloresState(view, this));
 			break;
 		}

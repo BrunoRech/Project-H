@@ -11,7 +11,9 @@ public interface InterfaceController extends Observado{
 	
 	void previousState();
 	
-	void sapoState();
+	void sapoState(boolean empate);
+	
+	void empate(String jogador);
 	
 	void atualizarIndexFlor(int x, int y);
 	

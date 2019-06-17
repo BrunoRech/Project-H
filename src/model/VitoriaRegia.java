@@ -10,8 +10,18 @@ public abstract class VitoriaRegia extends GameObject{
 	
 	protected boolean hasSapo = false;
 	protected String sapo;
-
-	public abstract VitoriaRegia reset();
+	
+	public VitoriaRegia reset() {
+		setVirada(false);
+		setHasFlor(false);
+		this.hasSapo = false;
+		this.sapo = null;
+		corFlor = "";
+		this.ovas = "";
+		this.aditivo = "";
+		this.nomeFlor = "Vr_Clara";
+		return this;
+	}
 	
 	protected String corFlor = "";
 	
@@ -27,10 +37,6 @@ public abstract class VitoriaRegia extends GameObject{
 
 	public VitoriaRegia getVr() {
 		return this;
-	}
-	
-	public boolean hasFlor() {
-		return this.hasFlor;
 	}
 	
 	public String getFlorCor() {

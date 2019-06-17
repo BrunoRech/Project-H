@@ -39,6 +39,7 @@ import control.command.VirarFlorCommand;
 import control.state.GameStateInterface;
 import control.state.MoverSapoState;
 import control.state.SelecionarFloresState;
+import control.state.VirarState;
 
 //classe da view do game
 public class Jogo extends JFrame implements Observador {
@@ -84,7 +85,8 @@ public class Jogo extends JFrame implements Observador {
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
 				int row, int column) {
 
-			// se a célula estiver selecionada ela recebe uma borda amarela para indicar ao usuário
+			// se a célula estiver selecionada ela recebe uma borda amarela para indicar ao
+			// usuário
 			if (isSelected) {
 				addBorder();
 			} else {
@@ -129,17 +131,17 @@ public class Jogo extends JFrame implements Observador {
 	private JButton btnFlor2;
 	private JButton btnFlor3;
 	private GameStateInterface state;
-	//se trata da imagem das flores na view somente
+	// se trata da imagem das flores na view somente
 	private ImageIcon florAmarela;
 	private ImageIcon florVermelha;
-	
+
 	private InterfaceController controle;
 	private JTable tabuleiro;
 	private boolean cellSelection;
 
 	// construtor
 	public Jogo() throws Exception {
-		
+
 		ci = CommandInvoker.getInstance();
 
 		setTitle("Haru Ichiban");
@@ -147,7 +149,7 @@ public class Jogo extends JFrame implements Observador {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
 		setResizable(false);
-		
+
 		this.controle = GameController.getInstance();
 		this.controle.addObservador(this);
 
@@ -157,15 +159,15 @@ public class Jogo extends JFrame implements Observador {
 		controle.embaralharMontes();
 
 		pack();
-		
+
 		this.setState(new SelecionarFloresState(this));
 		notificarDesfazerHabilitado(false);
 	}
 
 	private void initComponents() {
 		florAmarela = new ImageIcon("imagens/FlorAmarela.png");
-		florVermelha =  new ImageIcon("imagens/FlorVermelha.png");
-		
+		florVermelha = new ImageIcon("imagens/FlorVermelha.png");
+
 		// cria o tabuleiro e instancia todos seus componentes
 		tabuleiro = new JTable();
 		tabuleiro.setModel(new TableModel());
@@ -356,6 +358,7 @@ public class Jogo extends JFrame implements Observador {
 			public void actionPerformed(ActionEvent event) {
 				try {
 					ci.undo();
+					//TODO desfazer quebrando a view
 					notificarDesfazerHabilitado(false);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -372,8 +375,8 @@ public class Jogo extends JFrame implements Observador {
 			@Override
 			public void actionPerformed(ActionEvent event) {
 				try {
-					//controle.mudarJogador();
-					controle.limparMesa();
+					 controle.mudarJogador();
+					//controle.limparMesa();
 
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -389,7 +392,6 @@ public class Jogo extends JFrame implements Observador {
 		add(jp, SOUTH);
 
 		opcoesFlores = new JPanel();
-	
 
 		opcoesFlores.setLayout(new BorderLayout());
 		JPanel op1 = new JPanel();
@@ -467,10 +469,7 @@ public class Jogo extends JFrame implements Observador {
 		opcoesFlores.add(op3, BorderLayout.SOUTH);
 
 		add(opcoesFlores, BorderLayout.LINE_END);
-		
-		/* Temporário...
-		 * Apenas até a segunda entrega quando a pontuação será calculada vou arrumar isso
-		 * de forma que seja algo que mude de acordo com a pontuação*/
+
 		pontuacao = new JPanel();
 		pontuacao.setLayout(new BorderLayout());
 		pontos = new JLabel();
@@ -479,12 +478,13 @@ public class Jogo extends JFrame implements Observador {
 		add(pontuacao, BorderLayout.WEST);
 
 	}
+
 	// método main
 	public static void main(String[] args) {
 		try {
 			Jogo d = new Jogo();
 			d.setVisible(true);
-			// d.escolhaCor();
+			d.notificarEmpateFlor();
 		} catch (Exception e) {
 			e.printStackTrace();
 			JOptionPane.showMessageDialog(null, e.toString());
@@ -493,19 +493,20 @@ public class Jogo extends JFrame implements Observador {
 	}
 
 	@Override
-	//muda o tabuleiro
+	// muda o tabuleiro
 	public void notificarMudouTabuleiro() {
 		tabuleiro.repaint();
 	}
 
 	@Override
 	public void notificarGanhadorDaRodada(int pontosAmarelo, int pontosVermelho) {
-		pontos.setIcon(new ImageIcon("imagens/pontuacao/pontuacao"+pontosAmarelo+"x"+pontosVermelho+".png"));
+		pontos.setIcon(new ImageIcon("imagens/pontuacao/pontuacao" + pontosAmarelo + "x" + pontosVermelho + ".png"));
 	}
 
 	@Override
-	//atualiza os valores das flores da mão do jogador que o usuário está olhando
-	//@param maoJogador Os 3 valores de cada flor da mão daquele jogador
+	// atualiza os valores das flores da mão do jogador que o usuário está
+	// olhando
+	// @param maoJogador Os 3 valores de cada flor da mão daquele jogador
 	public void notificarJogadorPescou(int[] maoJogador) {
 		flor1Text.setText(maoJogador[0] + "");
 		flor2Text.setText(maoJogador[1] + "");
@@ -515,13 +516,19 @@ public class Jogo extends JFrame implements Observador {
 	@Override
 	public void notificarEmpateFlor() {
 		// TODO tela do coachar depois na segunda entrega
-		
-		// JOptionPane.showMessageDialog(null, "O tal do coachar vai aqui depois");
-		
+//		Object[] options = { "Amarelo", "Vermelho"};
+//		int n = JOptionPane.showOptionDialog(null, "Quem ir� coachar primeiro?",
+//				"Empate", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options,
+//				options[1]);
+//		System.out.println(n);
+		JOptionPane.showMessageDialog(null, "Coachar");
+		controle.empate("amarelo");
+		//TODO adicionar as flores nas posi��es dos sapos
+		//TODO mover os sapos
 	}
 
 	@Override
-	//ativa  os botões de seleção das flores do painel direito 
+	// ativa os botões de seleção das flores do painel direito
 	public void notificarSelecaoFlorDisponivel(boolean disponivel) {
 		btnFlor1.setEnabled(disponivel);
 		btnFlor2.setEnabled(disponivel);
@@ -530,13 +537,13 @@ public class Jogo extends JFrame implements Observador {
 	}
 
 	@Override
-	//ativa o botão de virar a vitória régia
+	// ativa o botão de virar a vitória régia
 	public void notificarVirarFlorHabilitada(boolean disponivel) {
 		jbVirar.setEnabled(disponivel);
 	}
 
 	@Override
-	//ativa os botões de movimento das vitórias régias
+	// ativa os botões de movimento das vitórias régias
 	public void notificarMovimentacaoHabilitada(boolean disponivel) {
 		jbMoverCima.setEnabled(disponivel);
 		jbMoverBaixo.setEnabled(disponivel);
@@ -546,54 +553,60 @@ public class Jogo extends JFrame implements Observador {
 	}
 
 	@Override
-	//permite o usuário selecionar a posição da sua próxima jogada no tabuleiro
+	// permite o usuário selecionar a posição da sua próxima jogada no tabuleiro
 	public void notificarSelecaoTabuleiroAprovada(boolean disponivel) {
 		tabuleiro.setCellSelectionEnabled(disponivel);
 		cellSelection = disponivel;
 	}
 
 	@Override
-	//ativa o botão de adicionar uma flor no campo selecionado
+	// ativa o botão de adicionar uma flor no campo selecionado
 	public void notificarAdicionarFlorHabilitado(boolean disponivel) {
 		jbAddFlor.setEnabled(disponivel);
 	}
 
 	@Override
-	//ativa o botão do vento da primavera
+	// ativa o botão do vento da primavera
 	public void notificarVentoDisponivel(boolean disponivel) {
 		jbVento.setEnabled(disponivel);
 	}
 
 	@Override
-	//troca a imagem das flores do painel da direita por flores amarelas
+	// troca a imagem das flores do painel da direita por flores amarelas
 	public void notificarIconesAmarelos() {
 		florIcone.setIcon(florAmarela);
 		florIcone2.setIcon(florAmarela);
 		florIcone3.setIcon(florAmarela);
 	}
-	
+
 	@Override
-	//troca a imagem das flores do painel da direita por flores vermelhas
+	// troca a imagem das flores do painel da direita por flores vermelhas
 	public void notificarIconesVermelhos() {
 		florIcone.setIcon(florVermelha);
 		florIcone2.setIcon(florVermelha);
 		florIcone3.setIcon(florVermelha);
-		
+
 	}
-	
+
 	@Override
 	public void setState(GameStateInterface state) {
 		this.state = state;
 	}
-	
+
 	@Override
 	public void nextState() {
 		this.state.nextState();
 	}
 
 	@Override
-	public void sapoState() {
-		this.setState(new MoverSapoState(this, this.state));
+	public void sapoState(boolean empate) {
+		System.out.println("State: " +this.state.toString());
+		if(empate) {
+			this.setState(new MoverSapoState(this, this.state));
+		}else {
+			this.setState(new MoverSapoState(this, this.state));
+		}
+		
 	}
 
 	@Override
@@ -608,13 +621,12 @@ public class Jogo extends JFrame implements Observador {
 
 	@Override
 	public void reloadState() {
-		this.state.loadState();	
+		this.state.loadState();
 	}
 
 	@Override
 	public void notificarSapoHabilitado(boolean disponivel) {
 		jbMoverSapo.setEnabled(disponivel);
 	}
-	
 
 }

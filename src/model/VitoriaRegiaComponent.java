@@ -13,17 +13,5 @@ public class VitoriaRegiaComponent extends VitoriaRegia {
 	public boolean hasSapo() {
 		return this.hasSapo;
 	}
-	@Override
-	public VitoriaRegia reset() {
-		setVirada(false);
-		setHasFlor(false);
-		this.hasSapo = false;
-		this.sapo = null;
-		corFlor = "";
-		this.ovas = "";
-		this.aditivo = "";
-		this.nomeFlor = "Vr_Clara";
-		return this;
-	}
 
 }

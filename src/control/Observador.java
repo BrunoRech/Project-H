@@ -13,7 +13,7 @@ public interface Observador {
 	
 	void reloadState();
 	
-	void sapoState();
+	void sapoState(boolean empate);
 	
 	void notificarMudouTabuleiro();
 	
