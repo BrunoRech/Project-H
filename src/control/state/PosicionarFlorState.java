@@ -2,14 +2,14 @@ package control.state;
 
 import control.Observador;
 
-public class PosicionarFlorState extends GameStateInterface{
+public class PosicionarFlorState extends GameState{
 
 	public PosicionarFlorState(Observador view) {
 		super(view);
 		loadState();
 	}
 	
-	public PosicionarFlorState(Observador view, GameStateInterface state) {
+	public PosicionarFlorState(Observador view, GameState state) {
 		super(view, state);
 		loadState();
 	}

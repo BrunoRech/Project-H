@@ -197,7 +197,7 @@ public class GameController implements InterfaceController {
 				vencedorDaRodada = "vermelho";
 				vr = (VitoriaRegia) tabuleiro.getElementAt(pos[0], pos[1]);
 				tabuleiro.setElementAt(new FlorAmarelaDecorator(vr), pos[0], pos[1]);
-			} else {// empate
+			} else if (!tabuleiroCheio() && valorAmarelo == valorVermelho) {
 				houveEmpate = true;
 				for (Observador obs : observadores) {
 					obs.notificarEmpateFlor();
@@ -205,10 +205,15 @@ public class GameController implements InterfaceController {
 			}
 			removerFlorDaMao();
 			pescar(1);
-			valorAmarelo = -1;
-			valorVermelho = -1;
-			if (!houveEmpate) {
-				nextState();
+			
+			if (tabuleiroCheio() && valorAmarelo == valorVermelho) {
+				limparMesa();
+			} else {
+				valorAmarelo = -1;
+				valorVermelho = -1;
+				if (!houveEmpate) {
+					nextState();
+				}
 			}
 		}
 
@@ -274,7 +279,6 @@ public class GameController implements InterfaceController {
 		if (x >= 0 && y >= 0) {
 			this.indexX = x;
 			this.indexY = y;
-			System.out.println(tabuleiro.getElementAt(y, x).getImagem());
 		}
 	}
 
@@ -341,7 +345,6 @@ public class GameController implements InterfaceController {
 					} else if (corSapoRemovido.equalsIgnoreCase("vermelho")) {
 						tabuleiro.setElementAt(new SapoVermelhoDecorator(vr), indexY, indexX);
 					}
-					System.out.println(houveEmpate);
 					if (houveEmpate) {
 						empate("vermelho");
 					} else {
@@ -370,7 +373,6 @@ public class GameController implements InterfaceController {
 			for (int j = 0; j < 5; j++) {
 				if (tabuleiro.getElementAt(j, i).getClass() != Agua.class) {
 					VitoriaRegia vr = ((VitoriaRegia) tabuleiro.getElementAt(j, i)).reset();
-					System.out.println(vr.getImagem());
 					if (vr.getClass() == OvasAmarelasDecorator.class) {
 						tabuleiro.setElementAt(new SapoAmareloDecorator(vr), j, i);
 					} else if (vr.getClass() == OvasVermelhasDecorator.class) {
@@ -382,6 +384,7 @@ public class GameController implements InterfaceController {
 
 			}
 		}
+		verificarGanhador();
 		embaralharMontes();
 		for (Observador obs : observadores) {
 			obs.setState(new SelecionarFloresState(obs));
@@ -459,19 +462,7 @@ public class GameController implements InterfaceController {
 
 		return null;
 	}
-
-	// método utilizado para evitar que o botão do vento fique disponível depois
-	// de um redo e quebre o jogo
-//	private void validarVento() {
-//		if (ventoIsPressed) {
-//			for (Observador obs : observadores)
-//				obs.notificarVentoIndisponivel();
-//		} else {
-//			for (Observador obs : observadores)
-//				obs.notificarVentoDisponivel();
-//		}
-//	}
-
+	
 	@Override
 	// método que verifica as posições das peças no tabuleiro para aplicar as
 	// pontuações no fim de cada rodada
@@ -495,7 +486,6 @@ public class GameController implements InterfaceController {
 			break;
 		}
 		tabuleiro.acceptVisitor(visitor);
-		// TODO verificar se algu�m ganhou
 		if (visitor.amareloPontuou()) {
 			pontuacaoAmarelo += visitor.getPontuacao();
 			houvePontuador = true;
@@ -528,10 +518,8 @@ public class GameController implements InterfaceController {
 
 		if (vr.getClass() == OvasAmarelasDecorator.class || vr.getClass() == OvasVermelhasDecorator.class) {
 			if (corSapoRemovido.equalsIgnoreCase("vermelho")) {
-				System.out.println("vermelho");
 				tabuleiro.setElementAt(new SapoVermelhoDecorator(vr), executedY, executedX);
 			} else if (corSapoRemovido.equalsIgnoreCase("amarelo")) {
-				System.out.println("amarelo");
 				vr = new SapoAmareloDecorator(vr);
 				tabuleiro.setElementAt(new SapoAmareloDecorator(vr), executedY, executedX);
 			}
@@ -808,7 +796,7 @@ public class GameController implements InterfaceController {
 
 	@Override
 	public boolean tabuleiroCheio() {
-		return (ladoAmarelo.size() == 1 && ladoVermelho.size() == 1);
+		return (ladoAmarelo.size() <= 2 && ladoVermelho.size() <= 2);
 	}
 
 	@Override
@@ -851,6 +839,7 @@ public class GameController implements InterfaceController {
 	@Override
 	public void empate(String jogador) {
 		try {
+			houveEmpate = true;
 			int pos[][] = encontrarSapos();
 			if (pos[0][0] != -1 && pos[1][0] != -1) {
 				vencedorDaRodada = jogador;
@@ -869,6 +858,21 @@ public class GameController implements InterfaceController {
 		} catch (Exception e) {
 
 		}
+	}
+
+	@Override
+	public void verificarGanhador() {
+		
+		if(pontuacaoAmarelo >=5) {
+			for (Observador obs : observadores) {
+				obs.notificarGanhadorDoJogo("amarelo");
+			}
+		}else if(pontuacaoVermelho >= 5) {
+			for (Observador obs : observadores) {
+				obs.notificarGanhadorDoJogo("vermelho");
+			}
+		}
+		
 	}
 
 }

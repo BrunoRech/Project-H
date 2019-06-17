@@ -1,23 +1,24 @@
 package control.strategy;
 
-import model.Agua;
 import model.Tabuleiro;
-import model.VitoriaRegia;
 
 public class FinderDiagonal5 extends PatternFinderInterface{
 
 	@Override
 	public boolean patternFinder(String cor, Tabuleiro tabuleiro) {
-		if ((tabuleiro.getElementAt(0, 0).getClass() != Agua.class
-				&& isValid((VitoriaRegia) tabuleiro.getElementAt(0, 0), cor))
-				&& (tabuleiro.getElementAt(1, 1).getClass() != Agua.class
-						&& isValid((VitoriaRegia) tabuleiro.getElementAt(1, 1), cor))
-				&& (tabuleiro.getElementAt(2, 2).getClass() != Agua.class
-						&& isValid((VitoriaRegia) tabuleiro.getElementAt(2, 2), cor))
-				&& (tabuleiro.getElementAt(3, 3).getClass() != Agua.class
-						&& isValid((VitoriaRegia) tabuleiro.getElementAt(3, 3), cor))
-				&& (tabuleiro.getElementAt(4, 4).getClass() != Agua.class
-						&& isValid((VitoriaRegia) tabuleiro.getElementAt(4, 4), cor))) {
+		if ((isValid(tabuleiro.getElementAt(0, 0), cor)
+						&& isValid( tabuleiro.getElementAt(1, 1), cor)
+						&& isValid(tabuleiro.getElementAt(2, 2), cor)
+						&& isValid(tabuleiro.getElementAt(3, 3), cor)
+						&& isValid(tabuleiro.getElementAt(4, 4), cor))
+						
+		|| (isValid(tabuleiro.getElementAt(0, 4), cor)
+						&& isValid( tabuleiro.getElementAt(1, 3), cor)
+						&& isValid(tabuleiro.getElementAt(2, 2), cor)
+						&& isValid(tabuleiro.getElementAt(3, 1), cor)
+						&& isValid(tabuleiro.getElementAt(4, 0), cor))
+						
+		)  {
 			return true;
 		}
 		return false;

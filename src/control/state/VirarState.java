@@ -2,14 +2,14 @@ package control.state;
 
 import control.Observador;
 
-public class VirarState extends GameStateInterface{
+public class VirarState extends GameState{
 
 	public VirarState(Observador view) {
 		super(view);
 		loadState();	
 	}
 	
-	public VirarState(Observador view, GameStateInterface state) {
+	public VirarState(Observador view, GameState state) {
 		super(view, state);
 		loadState();
 	}

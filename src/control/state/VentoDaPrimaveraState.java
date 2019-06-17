@@ -2,14 +2,14 @@ package control.state;
 
 import control.Observador;
 
-public class VentoDaPrimaveraState extends GameStateInterface{
+public class VentoDaPrimaveraState extends GameState{
 
 	public VentoDaPrimaveraState(Observador view) {
 		super(view);
 		loadState();
 	}
 	
-	public VentoDaPrimaveraState(Observador view, GameStateInterface state) {
+	public VentoDaPrimaveraState(Observador view, GameState state) {
 		super(view, state);
 		loadState();
 	}

@@ -2,10 +2,10 @@ package control.state;
 
 import control.Observador;
 
-public abstract class GameStateInterface {
+public abstract class GameState {
 
 	protected Observador view;
-	protected GameStateInterface antecessor;
+	protected GameState antecessor;
 
 	public abstract String toString();
 
@@ -13,11 +13,11 @@ public abstract class GameStateInterface {
 
 	public abstract void nextState();
 
-	public GameStateInterface(Observador view) {
+	public GameState(Observador view) {
 		this.view = view;
 	}
 
-	protected GameStateInterface(Observador view, GameStateInterface antecessor) {
+	protected GameState(Observador view, GameState antecessor) {
 		this.view = view;
 		this.antecessor = antecessor;
 	}

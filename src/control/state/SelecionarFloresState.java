@@ -2,14 +2,14 @@ package control.state;
 
 import control.Observador;
 
-public class SelecionarFloresState extends GameStateInterface{
+public class SelecionarFloresState extends GameState{
 
 	public SelecionarFloresState(Observador view) {
 		super(view);
 		loadState();
 	}
 
-	public SelecionarFloresState(Observador view, GameStateInterface state) {
+	public SelecionarFloresState(Observador view, GameState state) {
 		super(view, state);
 		loadState();
 	}
@@ -28,7 +28,7 @@ public class SelecionarFloresState extends GameStateInterface{
 		this.view.notificarSapoHabilitado(false);
 		this.view.notificarVirarFlorHabilitada(false);
 		this.view.notificarAdicionarFlorHabilitado(false);
-		this.view.notificarDesfazerHabilitado(true);
+		this.view.notificarDesfazerHabilitado(false);
 		this.view.notificarSelecaoTabuleiroAprovada(false);
 		
 	}

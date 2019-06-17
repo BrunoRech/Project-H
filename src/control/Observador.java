@@ -1,11 +1,11 @@
 package control;
 
-import control.state.GameStateInterface;
+import control.state.GameState;
 
 //interface do observador com a declaração de cada método de notificação que será usado
 public interface Observador {
 
-	void setState(GameStateInterface state);
+	void setState(GameState state);
 	
 	void nextState();
 	
@@ -14,6 +14,8 @@ public interface Observador {
 	void reloadState();
 	
 	void sapoState(boolean empate);
+	
+	void notificarGanhadorDoJogo(String vencedor);
 	
 	void notificarMudouTabuleiro();
 	

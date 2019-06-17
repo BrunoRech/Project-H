@@ -2,14 +2,14 @@ package control.state;
 
 import control.Observador;
 
-public class MoverPecasState extends GameStateInterface{
+public class MoverPecasState extends GameState{
 
 	public MoverPecasState(Observador view) {
 		super(view);
 		loadState();
 	}
 
-	public MoverPecasState(Observador view, GameStateInterface state) {
+	public MoverPecasState(Observador view, GameState state) {
 		super(view, state);
 		loadState();
 	}

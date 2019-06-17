@@ -2,14 +2,14 @@ package control.state;
 
 import control.Observador;
 
-public class MoverSapoState extends GameStateInterface {
+public class MoverSapoState extends GameState {
 
 	public MoverSapoState(Observador view) {
 		super(view);
 		loadState();
 	}
 	
-	public MoverSapoState(Observador view, GameStateInterface state) {
+	public MoverSapoState(Observador view, GameState state) {
 		super(view, state);
 		loadState();
 	}
@@ -34,7 +34,7 @@ public class MoverSapoState extends GameStateInterface {
 		System.out.println("Mover sapo state");
 		this.view.notificarVentoDisponivel(false);
 		this.view.notificarSapoHabilitado(true);
-		this.view.notificarDesfazerHabilitado(true);
+		this.view.notificarDesfazerHabilitado(false);
 		this.view.notificarSelecaoFlorDisponivel(false);
 		this.view.notificarMovimentacaoHabilitada(false);
 		this.view.notificarSelecaoTabuleiroAprovada(true);

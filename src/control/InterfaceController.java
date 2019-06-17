@@ -9,6 +9,8 @@ public interface InterfaceController extends Observado{
 	
 	void nextState();
 	
+	void verificarGanhador();
+	
 	void previousState();
 	
 	void sapoState(boolean empate);

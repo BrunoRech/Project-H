@@ -36,10 +36,9 @@ import control.command.MoverVitoriasRegiasParaCimaCommand;
 import control.command.MoverVitoriasRegiasParaDireitaCommand;
 import control.command.MoverVitoriasRegiasParaEsquerdaCommand;
 import control.command.VirarFlorCommand;
-import control.state.GameStateInterface;
+import control.state.GameState;
 import control.state.MoverSapoState;
 import control.state.SelecionarFloresState;
-import control.state.VirarState;
 
 //classe da view do game
 public class Jogo extends JFrame implements Observador {
@@ -130,7 +129,7 @@ public class Jogo extends JFrame implements Observador {
 	private JButton btnFlor1;
 	private JButton btnFlor2;
 	private JButton btnFlor3;
-	private GameStateInterface state;
+	private GameState state;
 	// se trata da imagem das flores na view somente
 	private ImageIcon florAmarela;
 	private ImageIcon florVermelha;
@@ -484,7 +483,6 @@ public class Jogo extends JFrame implements Observador {
 		try {
 			Jogo d = new Jogo();
 			d.setVisible(true);
-			d.notificarEmpateFlor();
 		} catch (Exception e) {
 			e.printStackTrace();
 			JOptionPane.showMessageDialog(null, e.toString());
@@ -515,16 +513,8 @@ public class Jogo extends JFrame implements Observador {
 
 	@Override
 	public void notificarEmpateFlor() {
-		// TODO tela do coachar depois na segunda entrega
-//		Object[] options = { "Amarelo", "Vermelho"};
-//		int n = JOptionPane.showOptionDialog(null, "Quem irá coachar primeiro?",
-//				"Empate", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options,
-//				options[1]);
-//		System.out.println(n);
 		JOptionPane.showMessageDialog(null, "Coachar");
 		controle.empate("amarelo");
-		//TODO adicionar as flores nas posições dos sapos
-		//TODO mover os sapos
 	}
 
 	@Override
@@ -589,7 +579,7 @@ public class Jogo extends JFrame implements Observador {
 	}
 
 	@Override
-	public void setState(GameStateInterface state) {
+	public void setState(GameState state) {
 		this.state = state;
 	}
 
@@ -627,6 +617,13 @@ public class Jogo extends JFrame implements Observador {
 	@Override
 	public void notificarSapoHabilitado(boolean disponivel) {
 		jbMoverSapo.setEnabled(disponivel);
+	}
+
+	@Override
+	public void notificarGanhadorDoJogo(String vencedor) {
+		JOptionPane.showMessageDialog(null, "Acabou o jogo!\nVencedor: Jogador " + vencedor);
+		pontos.setIcon(new ImageIcon("imagens/pontuacao/pontuacao0x0.png"));
+		
 	}
 
 }
