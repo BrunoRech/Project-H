@@ -431,6 +431,8 @@ public class GameController implements InterfaceController {
 		for (Observador obs : observadores) {
 			obs.notificarMudouTabuleiro();
 		}
+		indexX = -1;
+		indexY = -1;
 	}
 
 	// encontra uma vitória regia escura vaga para adicionar a flor do perdedor da
@@ -489,14 +491,18 @@ public class GameController implements InterfaceController {
 		if (visitor.amareloPontuou()) {
 			pontuacaoAmarelo += visitor.getPontuacao();
 			houvePontuador = true;
-			limparMesa();
+			if (done) {
+				limparMesa();
+			}
 		} else if (visitor.vermelhoPontuou()) {
 			pontuacaoVermelho += visitor.getPontuacao();
-			limparMesa();
 			houvePontuador = true;
+			if (done) {
+				limparMesa();
+			}
 		}
 
-		if (!done && !visitor.amareloPontuou() && !visitor.vermelhoPontuou()) {
+		if (!done) {
 			estrategia++;
 			verificarPadroes(estrategia);
 

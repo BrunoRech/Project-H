@@ -77,13 +77,15 @@ public class Jogo extends JFrame implements Observador {
 
 	// classe do renderer
 	class TabuleiroRenderer extends DefaultTableCellRenderer {
-
 		private static final long serialVersionUID = 1L;
 
 		// metodo de renderizacao das imagens
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
 				int row, int column) {
-
+			
+			
+			
+			
 			// se a celula estiver selecionada ela recebe uma borda amarela para indicar ao
 			// usuario
 			if (isSelected) {
@@ -174,7 +176,6 @@ public class Jogo extends JFrame implements Observador {
 		tabuleiro.setCellSelectionEnabled(false);
 		cellSelection = false;
 		tabuleiro.setDragEnabled(false);
-
 		for (int x = 0; x < tabuleiro.getColumnModel().getColumnCount(); x++) {
 			tabuleiro.getColumnModel().getColumn(x).setWidth(100);
 			tabuleiro.getColumnModel().getColumn(x).setMinWidth(100);
@@ -492,6 +493,7 @@ public class Jogo extends JFrame implements Observador {
 	// muda o tabuleiro
 	public void notificarMudouTabuleiro() {
 		tabuleiro.repaint();
+		tabuleiro.setCellSelectionEnabled(false);
 	}
 	
 	// atualiza o marcador da pontuacao com os novos valores
