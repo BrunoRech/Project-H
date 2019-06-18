@@ -2,7 +2,7 @@ package control.command;
 
 import control.InterfaceController;
 
-//classe do comando de virar uma vitória régia 
+//classe do comando de virar uma vitoria regia
 public class VirarFlorCommand implements Command{
 public InterfaceController controlador;
 	

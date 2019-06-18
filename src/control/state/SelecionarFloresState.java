@@ -1,7 +1,7 @@
 package control.state;
 
 import control.Observador;
-
+//Classe do estado onde o jogador escolhe 1 das 3 flores para competir
 public class SelecionarFloresState extends GameState{
 
 	public SelecionarFloresState(Observador view) {
@@ -13,12 +13,13 @@ public class SelecionarFloresState extends GameState{
 		super(view, state);
 		loadState();
 	}
-
+	
+	//proximo estado
 	@Override
 	public void nextState() {
 		this.view.setState(new PosicionarFlorState(this.view,this));
 	}
-
+	//atualiza a view com os botoes disponiveis nesse estado
 	@Override
 	public void loadState() {
 		System.out.println("Selecionar Flores state");

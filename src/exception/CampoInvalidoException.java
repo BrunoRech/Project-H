@@ -2,10 +2,10 @@ package exception;
 
 import javax.swing.JOptionPane;
 
-//classe de erro de um campo inválido selecionado para uma ação específica
+//classe de erro de um campo invalido selecionado para uma acao especifica
 public class CampoInvalidoException extends Exception{
 	//construtor
 	public CampoInvalidoException() {
-		JOptionPane.showMessageDialog(null, "Esse campo não é válido para sua ação\n Verifique as regras do jogo");
+		JOptionPane.showMessageDialog(null, "Campo invalido para sua jogada\n Verifique as regras do jogo");
 	}
 }

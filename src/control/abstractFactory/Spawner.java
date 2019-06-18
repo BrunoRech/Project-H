@@ -4,7 +4,7 @@ import model.Agua;
 import model.Flor;
 import model.VitoriaRegia;
 
-//classe do abstract factory das peças do jogo
+//classe do abstract factory das pecas do jogo
 public abstract class Spawner {
 	//agua
 	public abstract Agua spawnAgua();
@@ -14,7 +14,7 @@ public abstract class Spawner {
 	public abstract Flor spawnFlorAmarela(int numero);
 	public abstract Flor spawnFlorVermelha(int numero);
 	
-	//vitórias régias
+	//vitorias regias
 	public abstract VitoriaRegia spawnVrClara();
 	public abstract VitoriaRegia spawnVrClaraOvasAmarelas();
 	public abstract VitoriaRegia spawnVrClaraOvasVermelhas();	

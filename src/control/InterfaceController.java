@@ -2,7 +2,7 @@ package control;
 
 import javax.swing.Icon;
 
-//interface do controlador com a declaração de cada método que será usado
+//interface do controlador com a declaracao de cada metodo que sera usado
 public interface InterfaceController extends Observado{
 
 	void virarFlor();

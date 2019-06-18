@@ -1,6 +1,6 @@
 package model;
 
-//objeto da peça flor amarela
+//objeto da peca flor amarela
 public class FlorAmarela extends Flor {
 
 	public FlorAmarela(int numero) {

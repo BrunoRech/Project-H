@@ -50,19 +50,19 @@ public class Jogo extends JFrame implements Observador {
 		private static final long serialVersionUID = 1L;
 
 		@Override
-		// retorna o número de colunas do tabuleiro
+		// retorna o numero de colunas do tabuleiro
 		public int getColumnCount() {
 			return 5;
 		}
 
 		@Override
-		// retorna o número de linhas do tabuleiro
+		// retorna o numero de linhas do tabuleiro
 		public int getRowCount() {
 			return 5;
 		}
 
 		@Override
-		// pega a imagem do objeto na posição especificada
+		// pega a imagem do objeto na posicao especificada
 		public Object getValueAt(int row, int col) {
 			try {
 				return controle.getPeca(col, row);
@@ -80,12 +80,12 @@ public class Jogo extends JFrame implements Observador {
 
 		private static final long serialVersionUID = 1L;
 
-		// método de renderização das imagens
+		// metodo de renderizacao das imagens
 		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
 				int row, int column) {
 
-			// se a célula estiver selecionada ela recebe uma borda amarela para indicar ao
-			// usuário
+			// se a celula estiver selecionada ela recebe uma borda amarela para indicar ao
+			// usuario
 			if (isSelected) {
 				addBorder();
 			} else {
@@ -208,7 +208,8 @@ public class Jogo extends JFrame implements Observador {
 		});
 
 		add(tabuleiro, CENTER);
-
+		
+		// Cria o painel principal e adiciona os botoes, imagens, textos etc..
 		JPanel jp = new JPanel();
 		jp.setLayout(new BorderLayout());
 
@@ -357,7 +358,6 @@ public class Jogo extends JFrame implements Observador {
 			public void actionPerformed(ActionEvent event) {
 				try {
 					ci.undo();
-					//TODO desfazer quebrando a view
 					notificarDesfazerHabilitado(false);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -375,8 +375,6 @@ public class Jogo extends JFrame implements Observador {
 			public void actionPerformed(ActionEvent event) {
 				try {
 					 controle.mudarJogador();
-					//controle.limparMesa();
-
 				} catch (Exception e) {
 					e.printStackTrace();
 					JOptionPane.showMessageDialog(null, e.toString());
@@ -478,7 +476,7 @@ public class Jogo extends JFrame implements Observador {
 
 	}
 
-	// método main
+	// metodo main
 	public static void main(String[] args) {
 		try {
 			Jogo d = new Jogo();
@@ -495,22 +493,24 @@ public class Jogo extends JFrame implements Observador {
 	public void notificarMudouTabuleiro() {
 		tabuleiro.repaint();
 	}
-
+	
+	// atualiza o marcador da pontuacao com os novos valores
 	@Override
 	public void notificarGanhadorDaRodada(int pontosAmarelo, int pontosVermelho) {
 		pontos.setIcon(new ImageIcon("imagens/pontuacao/pontuacao" + pontosAmarelo + "x" + pontosVermelho + ".png"));
 	}
 
 	@Override
-	// atualiza os valores das flores da mão do jogador que o usuário está
+	// atualiza os valores das flores da mao do jogador que o usuario esta
 	// olhando
-	// @param maoJogador Os 3 valores de cada flor da mão daquele jogador
+	// @param maoJogador Os 3 valores de cada flor da mao daquele jogador
 	public void notificarJogadorPescou(int[] maoJogador) {
 		flor1Text.setText(maoJogador[0] + "");
 		flor2Text.setText(maoJogador[1] + "");
 		flor3Text.setText(maoJogador[2] + "");
 	}
-
+	
+	// Pede ao jogador que "Coache" pois ocorreu um empate entre as flores
 	@Override
 	public void notificarEmpateFlor() {
 		JOptionPane.showMessageDialog(null, "Coachar");
@@ -518,22 +518,21 @@ public class Jogo extends JFrame implements Observador {
 	}
 
 	@Override
-	// ativa os botões de seleção das flores do painel direito
+	// ativa os botoes de selecao das flores do painel direito
 	public void notificarSelecaoFlorDisponivel(boolean disponivel) {
 		btnFlor1.setEnabled(disponivel);
 		btnFlor2.setEnabled(disponivel);
 		btnFlor3.setEnabled(disponivel);
-
 	}
 
 	@Override
-	// ativa o botão de virar a vitória régia
+	// ativa o botao de virar a vitoria regia
 	public void notificarVirarFlorHabilitada(boolean disponivel) {
 		jbVirar.setEnabled(disponivel);
 	}
 
 	@Override
-	// ativa os botões de movimento das vitórias régias
+	// ativa os botoes de movimento das vitorias regias
 	public void notificarMovimentacaoHabilitada(boolean disponivel) {
 		jbMoverCima.setEnabled(disponivel);
 		jbMoverBaixo.setEnabled(disponivel);
@@ -543,20 +542,20 @@ public class Jogo extends JFrame implements Observador {
 	}
 
 	@Override
-	// permite o usuário selecionar a posição da sua próxima jogada no tabuleiro
+	// permite o usuario selecionar a posicao da sua proxima jogada no tabuleiro
 	public void notificarSelecaoTabuleiroAprovada(boolean disponivel) {
 		tabuleiro.setCellSelectionEnabled(disponivel);
 		cellSelection = disponivel;
 	}
 
 	@Override
-	// ativa o botão de adicionar uma flor no campo selecionado
+	// ativa o botao de adicionar uma flor no campo selecionado
 	public void notificarAdicionarFlorHabilitado(boolean disponivel) {
 		jbAddFlor.setEnabled(disponivel);
 	}
 
 	@Override
-	// ativa o botão do vento da primavera
+	// ativa o botao do vento da primavera
 	public void notificarVentoDisponivel(boolean disponivel) {
 		jbVento.setEnabled(disponivel);
 	}
@@ -577,53 +576,55 @@ public class Jogo extends JFrame implements Observador {
 		florIcone3.setIcon(florVermelha);
 
 	}
-
-	@Override
-	public void setState(GameState state) {
-		this.state = state;
-	}
-
-	@Override
-	public void nextState() {
-		this.state.nextState();
-	}
-
-	@Override
-	public void sapoState(boolean empate) {
-		System.out.println("State: " +this.state.toString());
-		if(empate) {
-			this.setState(new MoverSapoState(this, this.state));
-		}else {
-			this.setState(new MoverSapoState(this, this.state));
-		}
-		
-	}
-
-	@Override
-	public void previousState() {
-		this.state.previousState();
-	}
-
-	@Override
+	
+	//ativa/desativa o botao de defazer
+	@Override 
 	public void notificarDesfazerHabilitado(boolean disponivel) {
 		jbDesfazer.setEnabled(disponivel);
 	}
-
-	@Override
-	public void reloadState() {
-		this.state.loadState();
-	}
-
+	
+	//ativa/desativa o botao de mover sapo
 	@Override
 	public void notificarSapoHabilitado(boolean disponivel) {
 		jbMoverSapo.setEnabled(disponivel);
 	}
-
+	
+	// mostra quem ganhou o jogo
 	@Override
 	public void notificarGanhadorDoJogo(String vencedor) {
 		JOptionPane.showMessageDialog(null, "Acabou o jogo!\nVencedor: Jogador " + vencedor);
 		pontos.setIcon(new ImageIcon("imagens/pontuacao/pontuacao0x0.png"));
 		
+	}
+	
+	// recarrega o estado atual do jogo caso ocorrer alguma excessao
+	@Override
+	public void reloadState() {
+		this.state.loadState();
+	}
+	
+	// seta o estado atual do jogo
+	@Override
+	public void setState(GameState state) {
+		this.state = state;
+	}
+	
+	// avanca para o proximo estado
+	@Override
+	public void nextState() {
+		this.state.nextState();
+	}
+	
+	//chama o estado de movimentar sapo pelo tabuleiro
+	@Override
+	public void sapoState(boolean empate) {
+		this.setState(new MoverSapoState(this, this.state));
+	}
+	
+	// retorna ao estado de jogo anterior (usado nos undo)
+	@Override
+	public void previousState() {
+		this.state.previousState();
 	}
 
 }

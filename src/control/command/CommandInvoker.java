@@ -3,7 +3,7 @@ package control.command;
 import java.util.ArrayList;
 import java.util.List;
 
-//classe responsável por receber os comandos que deverão ser executados
+//classe responsavel por receber os comandos que deverao ser executados
 public class CommandInvoker {
 
 	private static CommandInvoker instance;
@@ -21,7 +21,7 @@ public class CommandInvoker {
 	
 	private CommandInvoker() {}
 	
-	//função de desfazer a ação
+	//funcao de desfazer a acao
 	public void undo() {
 		if (todos.size() > 0) {
 			Command comm = todos.remove(todos.size() - 1);
@@ -31,7 +31,7 @@ public class CommandInvoker {
 
 	}
 	
-	//executa um comando específico na hora
+	//executa um comando especifico na hora
 	public void execute(Command comm) {
 		todos.add(comm);
 		comm.execute();

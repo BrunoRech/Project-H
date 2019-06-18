@@ -5,11 +5,11 @@ public class Director {
 	private TabuleiroBuilder builder;
 	
 	//construtor da classe
-	//@param builder, o construtor que será utilizado no método construir
+	//@param builder, o construtor que sera utilizado no metodo construir
 	public Director(TabuleiroBuilder builder) {
 		this.builder = builder;
 	}
-	//método de criação do tabuleiro chamando o builder para executar passo-a-passo
+	//metodo de criacao do tabuleiro chamando o builder para executar passo-a-passo
 	public void construir() {
 		builder.reset();
 		builder.construirAgua();

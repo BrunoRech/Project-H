@@ -1,6 +1,6 @@
 package model;
 
-//classe do tabuleiro padrão do jogo
+//classe do tabuleiro padrao do jogo
 public class TabuleiroPadrao extends Tabuleiro{
 	private int  row = 5;
 	private int column = 5;

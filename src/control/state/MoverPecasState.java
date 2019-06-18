@@ -1,7 +1,7 @@
 package control.state;
 
 import control.Observador;
-
+//Classe do estado de jogo onde o jogador move as pecas
 public class MoverPecasState extends GameState{
 
 	public MoverPecasState(Observador view) {
@@ -14,11 +14,13 @@ public class MoverPecasState extends GameState{
 		loadState();
 	}
 	
+	//proximo estado
 	@Override
 	public void nextState() {
 		this.view.setState(new VirarState(this.view, this));
 	}
-
+	
+	//atualiza a view com os botoes disponiveis nesse estado
 	@Override
 	public void loadState() {
 		System.out.println("Mover pecas state");

@@ -2,6 +2,7 @@ package model.decorator;
 
 import model.VitoriaRegia;
 
+//Decorador que adiciona um sapo amarelo na vitoria regia
 public class SapoAmareloDecorator extends VitoriaRegiaDecorator{
 
 	public SapoAmareloDecorator(VitoriaRegia vr) {

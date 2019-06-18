@@ -2,7 +2,7 @@ package control;
 
 import control.state.GameState;
 
-//interface do observador com a declaração de cada método de notificação que será usado
+//interface do observador com a declaracao de cada metodo de notificacao que sera usado
 public interface Observador {
 
 	void setState(GameState state);

@@ -2,7 +2,7 @@ package control.command;
 
 import control.InterfaceController;
 
-//classe do comando de mover uma vitória régia para esquerda em 1 quadrado
+//classe do comando de mover uma vitoria regia para esquerda em 1 quadrado
 public class MoverVitoriasRegiasParaEsquerdaCommand implements Command{
 	
 	public InterfaceController controlador;

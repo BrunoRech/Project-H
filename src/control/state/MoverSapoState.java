@@ -1,7 +1,7 @@
 package control.state;
 
 import control.Observador;
-
+//Classe do estado de jogo onde o jogador move o sapo pelo tabuleiro
 public class MoverSapoState extends GameState {
 
 	public MoverSapoState(Observador view) {
@@ -13,7 +13,7 @@ public class MoverSapoState extends GameState {
 		super(view, state);
 		loadState();
 	}
-	
+	//proximo estado
 	@Override
 	public void nextState() {
 		switch (antecessor.toString()) {
@@ -28,7 +28,7 @@ public class MoverSapoState extends GameState {
 			break;
 		}
 	}
-
+	//atualiza a view com os botoes disponiveis nesse estado
 	@Override
 	public void loadState() {
 		System.out.println("Mover sapo state");

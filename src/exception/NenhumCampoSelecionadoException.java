@@ -6,6 +6,6 @@ import javax.swing.JOptionPane;
 public class NenhumCampoSelecionadoException extends Exception{
 	//construtor
 	public NenhumCampoSelecionadoException() {
-		JOptionPane.showMessageDialog(null, "Selecione um campo válido");
+		JOptionPane.showMessageDialog(null, "Selecione um campo valido");
 	}
 }

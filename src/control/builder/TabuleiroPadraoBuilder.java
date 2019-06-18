@@ -4,7 +4,7 @@ import control.abstractFactory.VersaoBasica;
 import model.Tabuleiro;
 import model.TabuleiroPadrao;
 
-//classe do concrete builder de tabuleiro padrão
+//classe do concrete builder de tabuleiro padrao
 public class TabuleiroPadraoBuilder extends TabuleiroBuilder{
 	private Tabuleiro tabuleiro;
 
@@ -23,7 +23,7 @@ public class TabuleiroPadraoBuilder extends TabuleiroBuilder{
 	}
 
 	@Override
-	//adiciona as vitórias régias claras no tabuleiro
+	//adiciona as vitorias regias claras no tabuleiro
 	public void construirVrClaras() {
 		this.tabuleiro.setVrClara(0,0);
 		this.tabuleiro.setVrClara(2,0);
@@ -45,21 +45,21 @@ public class TabuleiroPadraoBuilder extends TabuleiroBuilder{
 	}
 
 	@Override
-	//adiciona as vitórias régias claras com ovas amarelas no tabuleiro
+	//adiciona as vitorias regias claras com ovas amarelas no tabuleiro
 	public void construirVrOvasAmarela() {
 		this.tabuleiro.setVrOvasAmarela(2, 1);
 		
 	}
 
 	@Override
-	//adiciona as vitórias régias claras com ovas vermelhas no tabuleiro
+	//adiciona as vitorias regias claras com ovas vermelhas no tabuleiro
 	public void construirVrOvasVermelha() {
 		this.tabuleiro.setVrOvasVermelha(3, 3);
 		
 	}
 	
 	@Override
-	//adiciona a vitória régia totalmente escura no tabuleiro
+	//adiciona a vitoria regia totalmente escura no tabuleiro
 	public void construirVrEscura() {
 		this.tabuleiro.setVrEscura(3,1);
 	}

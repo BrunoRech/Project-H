@@ -1,6 +1,6 @@
 package model;
 
-//classe abstrata de uma peça do jogo padrão
+//classe abstrata de uma peca do jogo padrao
 public abstract class GameObject {
 
 	private String imagem;

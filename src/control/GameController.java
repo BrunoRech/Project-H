@@ -51,7 +51,7 @@ public class GameController implements InterfaceController {
 	private TabuleiroBuilder builder;
 
 	private int indexX, indexY;
-	// guarda a posição da ação anterior caso o usuário der desfazer
+	// guarda a posicao da acao anterior caso o usuario der desfazer
 	private int executedX, executedY;
 	private int valorAmarelo = -1;
 	private int valorVermelho = -1;
@@ -78,7 +78,7 @@ public class GameController implements InterfaceController {
 
 	// construtor
 	private GameController() {
-		this.spawner = new VersaoBasica();// se tivesse outra versão o usuario escolheria e atribuiria aqui
+		this.spawner = new VersaoBasica();// se tivesse outra versao o usuario escolheria e atribuiria aqui
 		this.builder = new TabuleiroPadraoBuilder();
 		this.director = new Director(this.builder);
 		this.visitor = new Pattern_Visitor();
@@ -97,7 +97,7 @@ public class GameController implements InterfaceController {
 
 	@Override
 	// adiciona o observador da lista de observadores
-	// @param Observador obs, é o observador que irá ser adicionado na lista de
+	// @param Observador obs, e o observador que ira ser adicionado na lista de
 	// observadores
 	public void addObservador(Observador obs) {
 		observadores.add(obs);
@@ -115,8 +115,8 @@ public class GameController implements InterfaceController {
 
 	@Override
 	// pega o icone de cada tile do tabuleiro
-	// @param col,row os index da peça cujo o sistema quer o Icon
-	// @returns Icon, o icone da peça do index escolhido
+	// @param col,row os index da peca cujo o sistema quer o Icon
+	// @returns Icon, o icone da peca do index escolhido
 	public Icon getPeca(int col, int row) {
 		return (tabuleiro.getElementAt(col, row) == null ? null
 				: new ImageIcon(tabuleiro.getElementAt(col, row).getImagem()));
@@ -139,7 +139,7 @@ public class GameController implements InterfaceController {
 
 	@Override
 	// pesca as flores do monte e adiciona na mao dos jogadores
-	// @param quantidade, o número de flores que os jogadores vão pescar
+	// @param quantidade, o numero de flores que os jogadores vao pescar
 	public void pescar(int quantidade) {
 		int[] valoresAmarelo = new int[3];
 		int[] valoresVermelho = new int[3];
@@ -171,8 +171,8 @@ public class GameController implements InterfaceController {
 
 	@Override
 	// recebe as flores escolhidas de cada jogador e verifica quem ganhou
-	// @param valor, o valor da flor que o usuário escolheu dentre as 3
-	// disponíveis na mão de cada jogado
+	// @param valor, o valor da flor que o usuario escolheu dentre as 3
+	// disponiveis na mao de cada jogado
 	public void escolherFlor(int valor) {
 
 		if (jogadorDaRodada.equalsIgnoreCase("amarelo")) {
@@ -205,7 +205,7 @@ public class GameController implements InterfaceController {
 			}
 			removerFlorDaMao();
 			pescar(1);
-			
+
 			if (tabuleiroCheio() && valorAmarelo == valorVermelho) {
 				limparMesa();
 			} else {
@@ -220,9 +220,9 @@ public class GameController implements InterfaceController {
 	}
 
 	@Override
-	// vira a flor escolhida "de cabeça para baixo"
-	// @param action, o tipo da ação, se é um execute, desfazer ou refazer cada
-	// um é tratado diferente
+	// vira a flor escolhida "de cabeca para baixo"
+	// @param action, o tipo da acao, se e um execute, desfazer ou refazer cada
+	// um e tratado diferente
 	public void virarFlor() {
 
 		try {
@@ -273,7 +273,7 @@ public class GameController implements InterfaceController {
 	}
 
 	@Override
-	// quando o usuario clicar em 1 tile do tabuleiro esse método atualiza o
+	// quando o usuario clicar em 1 tile do tabuleiro esse metodo atualiza o
 	// ponteiro da coordenada x e y
 	public void atualizarIndexFlor(int x, int y) {
 		if (x >= 0 && y >= 0) {
@@ -282,8 +282,8 @@ public class GameController implements InterfaceController {
 		}
 	}
 
-	// confere o index para ver se ele é válido
-	// @return retorna se o index selecionado pelo usuário é válido
+	// confere o index para ver se ele e valido
+	// @return retorna se o index selecionado pelo usuario e valido
 	public boolean conferirIndex() throws NenhumCampoSelecionadoException, CampoInvalidoException {
 		if (this.indexX == -1 || indexY == -1) {
 			throw new NenhumCampoSelecionadoException();
@@ -294,9 +294,9 @@ public class GameController implements InterfaceController {
 	}
 
 	@Override
-	// adiciona uma flor em cima de uma vitória régia se ela estiver livre
-	// @param action, o tipo da ação, se é um execute, desfazer ou refazer cada
-	// um é tratado diferente
+	// adiciona uma flor em cima de uma vitória regia se ela estiver livre
+	// @param action, o tipo da acao, se e um execute, desfazer ou refazer cada
+	// um e tratado diferente
 	public void adicionarFlor() {
 		try {
 			if (conferirIndex()) {
@@ -331,9 +331,9 @@ public class GameController implements InterfaceController {
 	}
 
 	@Override
-	// adiciona um sapo em cima de uma vitória régia se ela estiver livre
-	// @param action, o tipo da ação, se é um execute, desfazer ou refazer cada
-	// um é tratado diferente
+	// adiciona um sapo em cima de uma vitória regia se ela estiver livre
+	// @param action, o tipo da acao, se e um execute, desfazer ou refazer cada
+	// um e tratado diferente
 	public void adicionarSapo() {
 		try {
 
@@ -366,8 +366,8 @@ public class GameController implements InterfaceController {
 	}
 
 	@Override
-	// limpa a mesa e deixa ela como no início do jogo, sem mudar as suas
-	// posições
+	// limpa a mesa e deixa ela como no inicio do jogo, sem mudar as suas
+	// posicoes e verifica se alguem ganhou o jogo
 	public void limparMesa() {
 		for (int i = 0; i < 5; i++) {
 			for (int j = 0; j < 5; j++) {
@@ -394,7 +394,7 @@ public class GameController implements InterfaceController {
 	}
 
 	@Override
-	// notifica a view que começou o vento da primavera
+	// notifica a view que comecou o vento da primavera
 	public void ventoDaPrimavera() {
 		if (tabuleiroCheio()) {
 			removerSaposTabuleiro();
@@ -407,7 +407,7 @@ public class GameController implements InterfaceController {
 	}
 
 	@Override
-	// remove a flor da mão de cada jogador depois de ambos escolherem 1 para a
+	// remove a flor da mao de cada jogador depois de ambos escolherem 1 para a
 	// disputa na rodada
 	public void removerFlorDaMao() {
 		for (int i = 0; i < maoAmarelo.size(); i++) {
@@ -426,16 +426,16 @@ public class GameController implements InterfaceController {
 
 	}
 
-	// notifica a view que mudou algumas peças no tabuleiro
+	// notifica a view que mudou algumas pecas no tabuleiro
 	private void notificarMudancaTabuleiro() {
 		for (Observador obs : observadores) {
 			obs.notificarMudouTabuleiro();
 		}
 	}
 
-	// encontra uma vitória régia escura vaga para adicionar a flor do perdedor da
+	// encontra uma vitória regia escura vaga para adicionar a flor do perdedor da
 	// rodada
-	// @return retorna a posição x e y da vitória régia escura
+	// @return retorna a posicao x e y da vitória regia escura
 	private int[] encontrarVrEscura() {
 		VitoriaRegia vr;
 		for (int i = 0; i < 5; i++) {
@@ -462,10 +462,10 @@ public class GameController implements InterfaceController {
 
 		return null;
 	}
-	
+
 	@Override
-	// método que verifica as posições das peças no tabuleiro para aplicar as
-	// pontuações no fim de cada rodada
+	// metodo que verifica as posicoes das pecas no tabuleiro para aplicar as
+	// pontuacoes no fim de cada rodada
 	public void verificarPadroes(int estrategia) {
 		boolean done = false;
 		switch (estrategia) {
@@ -509,9 +509,9 @@ public class GameController implements InterfaceController {
 	}
 
 	@Override
-	// remove a flor de uma vitória régia
-	// @param action, o tipo da ação, se é um execute, desfazer ou refazer cada
-	// um é tratado diferente
+	// remove a flor de uma vitória regia
+	// @param action, o tipo da acao, se e um execute, desfazer ou refazer cada
+	// um e tratado diferente
 	public void removerFlor() {
 
 		VitoriaRegia vr = ((VitoriaRegia) tabuleiro.getElementAt(executedY, executedX)).getVr();
@@ -534,9 +534,9 @@ public class GameController implements InterfaceController {
 	}
 
 	@Override
-	// remove um sapo de uma vitória régia
-	// @param action, o tipo da ação, se é um execute, desfazer ou refazer cada
-	// um é tratado diferente
+	// remove um sapo de uma vitória regia
+	// @param action, o tipo da acao, se e um execute, desfazer ou refazer cada
+	// um e tratado diferente
 	public void removerSapo() {
 		try {
 			if (conferirIndex()) {
@@ -555,8 +555,8 @@ public class GameController implements InterfaceController {
 
 	@Override
 	// desvira uma flor que inicialmente tinha a face virada para cima
-	// @param action, o tipo da ação, se é um execute, desfazer ou refazer cada
-	// um é tratado diferente
+	// @param action, o tipo da acao, se e um execute, desfazer ou refazer cada
+	// um e tratado diferente
 	public void desvirarFlor() {
 		try {
 			if (conferirIndex()) {
@@ -572,7 +572,7 @@ public class GameController implements InterfaceController {
 	}
 
 	@Override
-	// muda o jogador que a view está apresentando ao usuário
+	// muda o jogador que a view esta apresentando ao usuario
 	public void mudarJogador() {
 		int[] valores = new int[3];
 
@@ -603,159 +603,165 @@ public class GameController implements InterfaceController {
 	}
 
 	@Override
-	// move a peça selecionada um quadrado para cima se estiver espaço
-	// @param action, o tipo da ação, se é um execute, desfazer ou refazer cada
-	// um é tratado diferente
+	// move a peca selecionada um quadrado para cima se estiver espaco
+	// @param action, o tipo da acao, se e um execute, desfazer ou refazer cada
+	// um e tratado diferente
 	public void moverPecasTabuleiroParaCima(String action) {
 		try {
-			validarUndo(action);
-			int coordX = -1;
-			for (int i = indexX; i > 0; i--) {
-				if (tabuleiro.getElementAt(indexY, i - 1).getClass() == Agua.class) {
-					coordX = i - 1;
-					break;
-				}
-			}
-
-			if (coordX == -1) {
-
-				throw new MovimentoInvalidoException();
-
-			} else {
-				GameObject aux = tabuleiro.getElementAt(indexY, coordX);
-				for (int i = coordX; i < indexX; i++) {
-					tabuleiro.setElementAt(tabuleiro.getElementAt(indexY, i + 1), indexY, i);
+			if (conferirIndex()) {
+				validarUndo(action);
+				int coordX = -1;
+				for (int i = indexX; i > 0; i--) {
+					if (tabuleiro.getElementAt(indexY, i - 1).getClass() == Agua.class) {
+						coordX = i - 1;
+						break;
+					}
 				}
 
-				tabuleiro.setElementAt(aux, indexY, indexX);
-				indexX = coordX;
-				validarExecute(action);
+				if (coordX == -1) {
 
+					throw new MovimentoInvalidoException();
+
+				} else {
+					GameObject aux = tabuleiro.getElementAt(indexY, coordX);
+					for (int i = coordX; i < indexX; i++) {
+						tabuleiro.setElementAt(tabuleiro.getElementAt(indexY, i + 1), indexY, i);
+					}
+
+					tabuleiro.setElementAt(aux, indexY, indexX);
+					indexX = coordX;
+					validarExecute(action);
+
+				}
+				notificarMudancaTabuleiro();
+				comecarNovaRodada();
 			}
-			notificarMudancaTabuleiro();
-			comecarNovaRodada();
-		} catch (MovimentoInvalidoException e) {
+		} catch (MovimentoInvalidoException | NenhumCampoSelecionadoException | CampoInvalidoException e) {
 			reloadState();
 		}
 	}
 
 	@Override
-	// move a peça selecionada um quadrado para baixo se estiver espaço
-	// @param action, o tipo da ação, se é um execute, desfazer ou refazer cada
-	// um é tratado diferente
+	// move a peca selecionada um quadrado para baixo se estiver espaco
+	// @param action, o tipo da acao, se e um execute, desfazer ou refazer cada
+	// um e tratado diferente
 	public void moverPecasTabuleiroParaBaixo(String action) {
 		try {
-			validarUndo(action);
-			int coordX = -1;
-			for (int i = indexX; i < 4; i++) {
-				if (tabuleiro.getElementAt(indexY, i + 1).getClass() == Agua.class) {
-					coordX = i + 1;
-					break;
-				}
-			}
-
-			if (coordX == -1) {
-
-				throw new MovimentoInvalidoException();
-
-			} else {
-				GameObject aux = tabuleiro.getElementAt(indexY, coordX);
-				for (int i = coordX; i > indexX; i--) {
-					tabuleiro.setElementAt(tabuleiro.getElementAt(indexY, i - 1), indexY, i);
+			if (conferirIndex()) {
+				validarUndo(action);
+				int coordX = -1;
+				for (int i = indexX; i < 4; i++) {
+					if (tabuleiro.getElementAt(indexY, i + 1).getClass() == Agua.class) {
+						coordX = i + 1;
+						break;
+					}
 				}
 
-				tabuleiro.setElementAt(aux, indexY, indexX);
-				indexX = coordX;
-				validarExecute(action);
+				if (coordX == -1) {
 
+					throw new MovimentoInvalidoException();
+
+				} else {
+					GameObject aux = tabuleiro.getElementAt(indexY, coordX);
+					for (int i = coordX; i > indexX; i--) {
+						tabuleiro.setElementAt(tabuleiro.getElementAt(indexY, i - 1), indexY, i);
+					}
+
+					tabuleiro.setElementAt(aux, indexY, indexX);
+					indexX = coordX;
+					validarExecute(action);
+
+				}
+
+				notificarMudancaTabuleiro();
+				comecarNovaRodada();
 			}
-
-			notificarMudancaTabuleiro();
-			comecarNovaRodada();
-		} catch (MovimentoInvalidoException e) {
+		} catch (MovimentoInvalidoException | NenhumCampoSelecionadoException | CampoInvalidoException e) {
 			reloadState();
 		}
 	}
 
 	@Override
-	// move a peça selecionada um quadrado para a esquerda se estiver espaço
-	// @param action, o tipo da ação, se é um execute, desfazer ou refazer cada
-	// um é tratado diferente
+	// move a peca selecionada um quadrado para a esquerda se estiver espaco
+	// @param action, o tipo da acao, se e um execute, desfazer ou refazer cada
+	// um e tratado diferente
 	public void moverPecasTabuleiroParaEsquerda(String action) {
 		try {
-			validarUndo(action);
-			int coordY = -1;
-			for (int i = indexY; i > 0; i--) {
-				if (tabuleiro.getElementAt(i - 1, indexX).getClass() == Agua.class) {
-					coordY = i - 1;
-					break;
-				}
-			}
-
-			if (coordY == -1) {
-
-				throw new MovimentoInvalidoException();
-
-			} else {
-				GameObject aux = tabuleiro.getElementAt(coordY, indexX);
-				for (int i = coordY; i < indexY; i++) {
-					tabuleiro.setElementAt(tabuleiro.getElementAt(i + 1, indexX), i, indexX);
+			if (conferirIndex()) {
+				validarUndo(action);
+				int coordY = -1;
+				for (int i = indexY; i > 0; i--) {
+					if (tabuleiro.getElementAt(i - 1, indexX).getClass() == Agua.class) {
+						coordY = i - 1;
+						break;
+					}
 				}
 
-				tabuleiro.setElementAt(aux, indexY, indexX);
-				indexY = coordY;
-				validarExecute(action);
-			}
+				if (coordY == -1) {
 
-			notificarMudancaTabuleiro();
-			comecarNovaRodada();
-		} catch (MovimentoInvalidoException e) {
+					throw new MovimentoInvalidoException();
+
+				} else {
+					GameObject aux = tabuleiro.getElementAt(coordY, indexX);
+					for (int i = coordY; i < indexY; i++) {
+						tabuleiro.setElementAt(tabuleiro.getElementAt(i + 1, indexX), i, indexX);
+					}
+
+					tabuleiro.setElementAt(aux, indexY, indexX);
+					indexY = coordY;
+					validarExecute(action);
+				}
+
+				notificarMudancaTabuleiro();
+				comecarNovaRodada();
+			}
+		} catch (MovimentoInvalidoException | NenhumCampoSelecionadoException | CampoInvalidoException e) {
 			reloadState();
 		}
 	}
 
 	@Override
-	// move a peça selecionada um quadrado para a direita se estiver espaço
-	// @param action, o tipo da ação, se é um execute, desfazer ou refazer cada
-	// um é tratado diferente
+	// move a peca selecionada um quadrado para a direita se estiver espaco
+	// @param action, o tipo da acao, se e um execute, desfazer ou refazer cada
+	// um e tratado diferente
 	public void moverPecasTabuleiroParaDireita(String action) {
 		try {
-			validarUndo(action);
-			int coordY = -1;
-			for (int i = indexY; i < 4; i++) {
-				if (tabuleiro.getElementAt(i + 1, indexX).getClass() == Agua.class) {
-					coordY = i + 1;
-					break;
-				}
-			}
-
-			if (coordY == -1) {
-
-				throw new MovimentoInvalidoException();
-
-			} else {
-				GameObject aux = tabuleiro.getElementAt(coordY, indexX);
-				for (int i = coordY; i > indexY; i--) {
-					tabuleiro.setElementAt(tabuleiro.getElementAt(i - 1, indexX), i, indexX);
+			if (conferirIndex()) {
+				validarUndo(action);
+				int coordY = -1;
+				for (int i = indexY; i < 4; i++) {
+					if (tabuleiro.getElementAt(i + 1, indexX).getClass() == Agua.class) {
+						coordY = i + 1;
+						break;
+					}
 				}
 
-				tabuleiro.setElementAt(aux, indexY, indexX);
-				indexY = coordY;
-				validarExecute(action);
+				if (coordY == -1) {
+
+					throw new MovimentoInvalidoException();
+
+				} else {
+					GameObject aux = tabuleiro.getElementAt(coordY, indexX);
+					for (int i = coordY; i > indexY; i--) {
+						tabuleiro.setElementAt(tabuleiro.getElementAt(i - 1, indexX), i, indexX);
+					}
+
+					tabuleiro.setElementAt(aux, indexY, indexX);
+					indexY = coordY;
+					validarExecute(action);
+				}
+
+				notificarMudancaTabuleiro();
+				comecarNovaRodada();
 			}
-
-			notificarMudancaTabuleiro();
-			comecarNovaRodada();
-
-		} catch (MovimentoInvalidoException e) {
+		} catch (MovimentoInvalidoException | NenhumCampoSelecionadoException | CampoInvalidoException e) {
 			reloadState();
 		}
 	}
 
 	@Override
-	// caso o comando seja um undo ele utiliza as coordenadas da ultima a��o do
-	// ultimo comando
-	// @param action, o tipo da a��o, se � um refazer
+	// caso o comando seja um undo ele utiliza as coordenadas da ultima acao
+	// @param action, o tipo da acao
 	public void validarUndo(String action) {
 		if (action.equalsIgnoreCase("undo")) {
 			indexX = executedX;
@@ -766,8 +772,8 @@ public class GameController implements InterfaceController {
 	}
 
 	@Override
-	// guarda a coordenada da a��o caso o usu�rio pe�a um undo
-	// @param action, o tipo da a��o, se � um execute ou refazer
+	// guarda a coordenada da acao caso o usuario desfaca uma acao
+	// @param action, o tipo da acao, se e um execute
 	public void validarExecute(String action) {
 		if (action.equalsIgnoreCase("execute")) {
 			executedX = indexX;
@@ -777,6 +783,8 @@ public class GameController implements InterfaceController {
 
 	}
 
+	// Metodo que procura a posicao dos 2 sapos no tabuleiro e retorna suas posicoes
+	// em 1 matriz
 	private int[][] encontrarSapos() {
 		int[][] pos = { { -1, -1 }, { -1, -1 } };
 		for (int i = 0; i < 5; i++) {
@@ -794,11 +802,13 @@ public class GameController implements InterfaceController {
 		return pos;
 	}
 
+	// Metodo que verifica se o tabuleiro esta cheio
 	@Override
 	public boolean tabuleiroCheio() {
 		return (ladoAmarelo.size() <= 2 && ladoVermelho.size() <= 2);
 	}
 
+	// Metodo que remove os sapos do tabuleiro quando o tabuleiro estiver cheio
 	@Override
 	public void removerSaposTabuleiro() {
 		int[][] pos = encontrarSapos();
@@ -809,6 +819,7 @@ public class GameController implements InterfaceController {
 		notificarMudancaTabuleiro();
 	}
 
+	// Notifica o observador que ele pode avancar para o proximo estado do jogo
 	@Override
 	public void nextState() {
 		for (Observador obs : observadores) {
@@ -816,6 +827,8 @@ public class GameController implements InterfaceController {
 		}
 	}
 
+	// Notifica o observador que ele deve avancar para o estado de movimentar os
+	// sapos
 	@Override
 	public void sapoState(boolean empate) {
 		for (Observador obs : observadores) {
@@ -823,6 +836,7 @@ public class GameController implements InterfaceController {
 		}
 	}
 
+	// Notifica o observador que ele deve retornar ao estado anterior ao atual
 	@Override
 	public void previousState() {
 		for (Observador obs : observadores) {
@@ -830,12 +844,18 @@ public class GameController implements InterfaceController {
 		}
 	}
 
+	// Notifica o observador que ele deve recarregar o estado atual pois algum erro
+	// aconteceu
 	public void reloadState() {
 		for (Observador obs : observadores) {
 			obs.reloadState();
 		}
 	}
 
+	/*
+	 * Metodo que trata o empate do jogo, adicionando as flores em cima dos
+	 * respectivos sapos e os movendo em seguida
+	 */
 	@Override
 	public void empate(String jogador) {
 		try {
@@ -860,19 +880,23 @@ public class GameController implements InterfaceController {
 		}
 	}
 
+	/*
+	 * Metodo que verifica se a pontuacao dos jogadores ja atingiu a quantidade
+	 * minima para declarar um vencedor
+	 */
 	@Override
 	public void verificarGanhador() {
-		
-		if(pontuacaoAmarelo >=5) {
+
+		if (pontuacaoAmarelo >= 5) {
 			for (Observador obs : observadores) {
 				obs.notificarGanhadorDoJogo("amarelo");
 			}
-		}else if(pontuacaoVermelho >= 5) {
+		} else if (pontuacaoVermelho >= 5) {
 			for (Observador obs : observadores) {
 				obs.notificarGanhadorDoJogo("vermelho");
 			}
 		}
-		
+
 	}
 
 }

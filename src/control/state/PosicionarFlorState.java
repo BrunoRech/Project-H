@@ -1,7 +1,7 @@
 package control.state;
 
 import control.Observador;
-
+//Classe do estado onde o jogador posiciona as flores no tabuleiro
 public class PosicionarFlorState extends GameState{
 
 	public PosicionarFlorState(Observador view) {
@@ -13,12 +13,13 @@ public class PosicionarFlorState extends GameState{
 		super(view, state);
 		loadState();
 	}
-
+	//proximo estado
 	@Override
 	public void nextState() {
 		this.view.setState(new VentoDaPrimaveraState(this.view, this));
 	}
-
+	
+	//atualiza a view com os botoes disponiveis nesse estado
 	@Override
 	public void loadState() {
 		System.out.println("posicionar flores state");

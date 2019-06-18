@@ -1,7 +1,7 @@
 package control.state;
 
 import control.Observador;
-
+//Classe do estado onde o jogador vira uma vitoria regia
 public class VirarState extends GameState{
 
 	public VirarState(Observador view) {
@@ -13,12 +13,14 @@ public class VirarState extends GameState{
 		super(view, state);
 		loadState();
 	}
-
+	
+	//proximo estado
 	@Override
 	public void nextState() {
 		this.view.setState(new SelecionarFloresState(this.view,this));
 	}
-
+	
+	//atualiza a view com os botoes disponiveis nesse estado
 	@Override
 	public void loadState() {
 		System.out.println("Virar Flor state");

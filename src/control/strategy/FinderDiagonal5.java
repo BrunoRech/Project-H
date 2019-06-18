@@ -1,9 +1,10 @@
 package control.strategy;
 
 import model.Tabuleiro;
-
+//Classe que procura o padrao de 5 vitorias regias na diagonal
 public class FinderDiagonal5 extends PatternFinderInterface{
-
+	
+	//@return boolean, se achar o padrao true, caso contrario false
 	@Override
 	public boolean patternFinder(String cor, Tabuleiro tabuleiro) {
 		if ((isValid(tabuleiro.getElementAt(0, 0), cor)
@@ -24,6 +25,7 @@ public class FinderDiagonal5 extends PatternFinderInterface{
 		return false;
 	}
 
+	//@return integer, a pontuacao do padrao
 	@Override
 	public int getPontuacao() {
 		return 5;

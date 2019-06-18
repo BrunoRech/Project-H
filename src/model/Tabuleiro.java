@@ -8,17 +8,17 @@ public abstract class Tabuleiro {
 	protected GameObject[][] tabuleiro;
 	protected Spawner spawner;
 	
-	//seta o tipo de spawner que está sendo usado
+	//seta o tipo de spawner que esta sendo usado
 	public void setSpawner(Spawner spawner) {
 		this.spawner = spawner;
 	}
 	
-	//pega o elemento na posição y e x
+	//pega o elemento na posicao y e x
 	public GameObject getElementAt(int y, int x) {
 		return this.tabuleiro[y][x];
 	}
 	
-	//seta o elemento na posição y e x
+	//seta o elemento na posicao y e x
 	public void setElementAt(GameObject object,int y, int x) {
 		this.tabuleiro[y][x] = object;
 	}
@@ -27,7 +27,7 @@ public abstract class Tabuleiro {
 	public abstract int getColumns();
 	public abstract int getRows();
 	
-	//métodos abstratos que devem ser implementados nas classes derivadas desta
+	//metodos abstratos que devem ser implementados nas classes derivadas desta
 	public abstract void setAgua(int y, int x);
 	public abstract void setVrClara(int y, int x);
 	public abstract void setVrEscura(int y, int x);

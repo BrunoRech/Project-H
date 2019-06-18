@@ -1,6 +1,6 @@
 package model;
 
-//objeto abstrato da peça flor
+//objeto abstrato da peca flor
 public abstract class Flor extends GameObject{
 
 	public Flor(int numero,String imagem) {

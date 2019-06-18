@@ -1,6 +1,6 @@
 package model;
 
-//classe da peça da vitória régia que possue dois lados escuros
+//classe da peca da vitoria regia que possue dois lados escuros
 public class Vr_Escura extends VitoriaRegia {
 	
 	public Vr_Escura() {

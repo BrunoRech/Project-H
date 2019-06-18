@@ -1,6 +1,6 @@
 package model;
 
-//classe da peça vitória régia clara
+//classe da peca vitoria regia clara
 public class VitoriaRegiaComponent extends VitoriaRegia {
 
 	public VitoriaRegiaComponent() {

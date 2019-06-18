@@ -1,7 +1,7 @@
 package model.decorator;
 
 import model.VitoriaRegia;
-
+//Decorador que escurece a vitoria regia
 public class EscurecerDecorator extends VitoriaRegiaDecorator{
 
 	public EscurecerDecorator(VitoriaRegia vr) {

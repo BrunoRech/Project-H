@@ -1,6 +1,6 @@
 package model;
 
-//classe abstrata de da peça vitória régia
+//classe abstrata de da peca vitoria regia
 public abstract class VitoriaRegia extends GameObject{
 	
 	protected String nomeFlor,ovas,aditivo;
@@ -25,7 +25,7 @@ public abstract class VitoriaRegia extends GameObject{
 	
 	protected String corFlor = "";
 	
-	//métodos em comum que não possuem variação
+	//metodos em comum que nao possuem variacao
 	public boolean isVirada() {
 		return this.isVirada;
 	}
@@ -64,8 +64,6 @@ public abstract class VitoriaRegia extends GameObject{
 		this.isVirada = isVirada;
 	}
 	
-	
-	//
 	public String getNomeFlor() {
 		return nomeFlor;
 	}

@@ -2,7 +2,7 @@ package control.command;
 
 import control.InterfaceController;
 
-//classe do comando de mover o sapo para outra vitória régia
+//classe do comando de mover o sapo para outra vitoria regia
 public class MoverSapoCommand implements Command{
 	
 	public InterfaceController controlador;
