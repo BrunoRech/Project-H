@@ -24,7 +24,6 @@ public class VirarState extends GameState{
 	@Override
 	public void loadState() {
 		System.out.println("Virar Flor state");
-		this.view.notificarDesfazerHabilitado(true);
 		this.view.notificarSelecaoFlorDisponivel(false);
 		this.view.notificarMovimentacaoHabilitada(false);
 		this.view.notificarSelecaoTabuleiroAprovada(true);

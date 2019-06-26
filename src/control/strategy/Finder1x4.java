@@ -14,7 +14,7 @@ public class Finder1x4 extends PatternFinderInterface{
 		return false;
 	}
 	
-	//Método que procura o padrao 1x4 na horizontal
+	//Metodo que procura o padrao 1x4 na horizontal
 	private boolean patternFinderHorizontal(String cor, Tabuleiro tabuleiro) {
 	for (int i = 0; i < 5; i++) {
 			for (int j = 0; j < 2; j++) {
@@ -31,7 +31,7 @@ public class Finder1x4 extends PatternFinderInterface{
 		return false;
 	}
 	
-	//Método que procura o padrao 1x4 na vertical
+	//Metodo que procura o padrao 1x4 na vertical
 	private boolean patternFinderVertical(String cor, Tabuleiro tabuleiro) {
 		for (int i = 0; i < 2; i++) {
 			for (int j = 0; j < 5; j++) {

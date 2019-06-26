@@ -17,11 +17,6 @@ public class MoverVitoriasRegiasParaCimaCommand implements Command{
 	}
 
 	@Override
-	public void undo() {
-		controlador.moverPecasTabuleiroParaBaixo("undo");
-	}
-
-	@Override
 	public String toString() {
 		return "MoverVitoriasRegiasParaCimaCommand";
 	}

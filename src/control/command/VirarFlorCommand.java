@@ -15,11 +15,4 @@ public InterfaceController controlador;
 		
 	}
 
-	@Override
-	public void undo() {
-		controlador.desvirarFlor();
-		
-	}
-
-
 }

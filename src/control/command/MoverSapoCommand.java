@@ -16,10 +16,4 @@ public class MoverSapoCommand implements Command{
 		
 	}
 
-	@Override
-	public void undo() {
-		controlador.removerSapo();
-		
-	}
-
 }

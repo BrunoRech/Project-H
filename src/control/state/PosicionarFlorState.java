@@ -24,7 +24,6 @@ public class PosicionarFlorState extends GameState{
 	public void loadState() {
 		System.out.println("posicionar flores state");
 		this.view.notificarSapoHabilitado(false);
-		this.view.notificarDesfazerHabilitado(false);
 		this.view.notificarVentoDisponivel(false);
 		this.view.notificarAdicionarFlorHabilitado(true);
 		this.view.notificarSelecaoTabuleiroAprovada(true);

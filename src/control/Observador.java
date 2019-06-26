@@ -9,8 +9,6 @@ public interface Observador {
 	
 	void nextState();
 	
-	void previousState();
-	
 	void reloadState();
 	
 	void sapoState(boolean empate);
@@ -43,5 +41,4 @@ public interface Observador {
 	
 	void notificarAdicionarFlorHabilitado(boolean disponivel);
 	
-	void notificarDesfazerHabilitado(boolean disponivel);
 }

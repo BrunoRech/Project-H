@@ -16,10 +16,4 @@ public class AdicionarFlorCommand implements Command{
 		controlador.adicionarFlor();
 		
 	}
-
-	@Override
-	public void undo() {
-		controlador.removerFlor();
-	}
-
 }

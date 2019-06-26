@@ -8,7 +8,7 @@ public class Pattern_Visitor extends TabuleiroVisitor {
 	
 	protected boolean amareloPontuou;
 	protected boolean vermelhoPontuou;
-	protected PatternFinderInterface finder;
+	protected PatternFinderInterface strategy;
 	
 	//retorna se o amarelo pontuou na verificacao
 	public boolean amareloPontuou() {
@@ -22,12 +22,12 @@ public class Pattern_Visitor extends TabuleiroVisitor {
 	
 	//setter da estrategia que o visitor ira utilizar na verificacao dos padroes
 	public void setStrategy(PatternFinderInterface finder) {
-		this.finder = finder;
+		this.strategy = finder;
 	}
 	
 	//pega a pontuacao do padrao de acordo com a estrategia utilizada
 	public int getPontuacao(){
-		return this.finder.getPontuacao();
+		return this.strategy.getPontuacao();
 	}
 	
 	//metodo que faz a visita no tabuleiro
@@ -39,12 +39,12 @@ public class Pattern_Visitor extends TabuleiroVisitor {
 	
 	//metodo que verifica se encontrou algum padrao na cor vermelha
 	private void verificarPadraoVermelho(Tabuleiro tabuleiro) {
-		this.vermelhoPontuou = this.finder.patternFinder("vermelha", tabuleiro);
+		this.vermelhoPontuou = this.strategy.patternFinder("vermelha", tabuleiro);
 	}
 
 	//metodo que verifica se encontrou algum padrao na cor amarela
 	private void verificarPadraoAmarelo(Tabuleiro tabuleiro) {
-		this.amareloPontuou = this.finder.patternFinder("amarela", tabuleiro);
+		this.amareloPontuou = this.strategy.patternFinder("amarela", tabuleiro);
 
 	}
 

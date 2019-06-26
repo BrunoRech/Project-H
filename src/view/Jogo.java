@@ -117,7 +117,6 @@ public class Jogo extends JFrame implements Observador {
 	private JButton jbMoverSapo;
 	private JButton jbAddFlor;
 	private JButton jbVento;
-	private JButton jbDesfazer;
 	private JButton jbProx;
 	private JPanel opcoesFlores;
 	private JPanel pontuacao;
@@ -162,7 +161,6 @@ public class Jogo extends JFrame implements Observador {
 		pack();
 
 		this.setState(new SelecionarFloresState(this));
-		notificarDesfazerHabilitado(false);
 	}
 
 	private void initComponents() {
@@ -351,23 +349,6 @@ public class Jogo extends JFrame implements Observador {
 		});
 
 		jpOpcoes2.add(jbMoverDir);
-
-		jbDesfazer = new JButton("Desfazer");
-		jbDesfazer.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent event) {
-				try {
-					ci.undo();
-					notificarDesfazerHabilitado(false);
-				} catch (Exception e) {
-					e.printStackTrace();
-					JOptionPane.showMessageDialog(null, e.toString());
-				}
-			}
-		});
-
-		jpOpcoes.add(jbDesfazer);
 
 		jbProx = new JButton("Trocar Jogador");
 		jbProx.addActionListener(new ActionListener() {
@@ -579,12 +560,6 @@ public class Jogo extends JFrame implements Observador {
 
 	}
 	
-	//ativa/desativa o botao de defazer
-	@Override 
-	public void notificarDesfazerHabilitado(boolean disponivel) {
-		jbDesfazer.setEnabled(disponivel);
-	}
-	
 	//ativa/desativa o botao de mover sapo
 	@Override
 	public void notificarSapoHabilitado(boolean disponivel) {
@@ -621,12 +596,6 @@ public class Jogo extends JFrame implements Observador {
 	@Override
 	public void sapoState(boolean empate) {
 		this.setState(new MoverSapoState(this, this.state));
-	}
-	
-	// retorna ao estado de jogo anterior (usado nos undo)
-	@Override
-	public void previousState() {
-		this.state.previousState();
 	}
 
 }

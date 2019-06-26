@@ -29,7 +29,6 @@ public class SelecionarFloresState extends GameState{
 		this.view.notificarSapoHabilitado(false);
 		this.view.notificarVirarFlorHabilitada(false);
 		this.view.notificarAdicionarFlorHabilitado(false);
-		this.view.notificarDesfazerHabilitado(false);
 		this.view.notificarSelecaoTabuleiroAprovada(false);
 		
 	}

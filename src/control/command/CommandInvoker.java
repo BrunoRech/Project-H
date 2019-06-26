@@ -10,8 +10,6 @@ public class CommandInvoker {
 	
 	private List<Command> todos = new ArrayList<>();
 
-	private List<Command> undo = new ArrayList<>();
-
 	public static CommandInvoker getInstance() {
 		if(instance == null) {
 			instance = new CommandInvoker();
@@ -20,16 +18,6 @@ public class CommandInvoker {
 	}
 	
 	private CommandInvoker() {}
-	
-	//funcao de desfazer a acao
-	public void undo() {
-		if (todos.size() > 0) {
-			Command comm = todos.remove(todos.size() - 1);
-			comm.undo();
-			undo.add(comm);
-		}
-
-	}
 	
 	//executa um comando especifico na hora
 	public void execute(Command comm) {

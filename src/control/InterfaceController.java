@@ -11,8 +11,6 @@ public interface InterfaceController extends Observado{
 	
 	void verificarGanhador();
 	
-	void previousState();
-	
 	void sapoState(boolean empate);
 	
 	void empate(String jogador);
@@ -47,16 +45,7 @@ public interface InterfaceController extends Observado{
 	
 	void verificarPadroes(int estrategia);
 
-	void removerFlor();
-
-	void removerSapo();
-
-	void desvirarFlor();
-
 	void mudarJogador();
-	
-	void validarExecute(String action);
-	void validarUndo(String action);
 	
 	void moverPecasTabuleiroParaCima(String action);
 	void moverPecasTabuleiroParaBaixo(String action);

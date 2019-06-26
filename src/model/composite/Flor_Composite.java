@@ -9,8 +9,6 @@ public class Flor_Composite extends Flor{
 	//lista
 	private List<Flor> flores = new ArrayList<>();
 	
-	public Flor_Composite() {}
-	
 	//Pega o tamanho no formato de arvore
 	@Override
 	public int size() {
@@ -20,6 +18,7 @@ public class Flor_Composite extends Flor{
 		}
 		return total;
 	}
+	public Flor_Composite() {}
 	
 	public Flor remove(int i) {
 		return flores.remove(i);

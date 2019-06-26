@@ -51,11 +51,9 @@ public class GameController implements InterfaceController {
 	private TabuleiroBuilder builder;
 
 	private int indexX, indexY;
-	// guarda a posicao da acao anterior caso o usuario der desfazer
-	private int executedX, executedY;
 	private int valorAmarelo = -1;
 	private int valorVermelho = -1;
-	private boolean sapoMovido, houveUndo, houvePontuador, houveEmpate;
+	private boolean sapoMovido, houvePontuador, houveEmpate;
 	private String corSapoRemovido;
 	private String jogadorDaRodada = "amarelo";
 	private String vencedorDaRodada = "";
@@ -185,7 +183,6 @@ public class GameController implements InterfaceController {
 			mudarJogador();
 		} else {
 			sapoMovido = true;
-			houveUndo = false;
 			houveEmpate = false;
 			VitoriaRegia vr;
 			int[] pos = encontrarVrEscura();
@@ -237,8 +234,6 @@ public class GameController implements InterfaceController {
 						sapoState(houveEmpate);
 					}
 					tabuleiro.setElementAt(new EscurecerDecorator(vr), indexY, indexX);
-					executedX = indexX;
-					executedY = indexY;
 					notificarMudancaTabuleiro();
 					comecarNovaRodada();
 
@@ -254,11 +249,12 @@ public class GameController implements InterfaceController {
 
 	// inicia uma nova rodada
 	private void comecarNovaRodada() {
-		if (sapoMovido && !houveUndo) {
+		if (sapoMovido) {
 			try {
 				houvePontuador = false;
 				verificarPadroes(1);
 				if (!houvePontuador) {
+					System.out.println("bbbb");
 					nextState();
 					if (ladoAmarelo.size() == 0 && ladoVermelho.size() == 0) {
 						limparMesa();
@@ -267,8 +263,6 @@ public class GameController implements InterfaceController {
 				}
 			} catch (Exception e) {
 			}
-		} else if (houveUndo) {
-			previousState();
 		}
 	}
 
@@ -316,9 +310,6 @@ public class GameController implements InterfaceController {
 					} else if (vencedorDaRodada.equalsIgnoreCase("vermelho")) {
 						tabuleiro.setElementAt(new FlorVermelhaDecorator(vr), indexY, indexX);
 					}
-					executedX = indexX;
-					executedY = indexY;
-					houveUndo = false;
 				} else {
 					throw new CampoInvalidoException();
 				}
@@ -349,7 +340,6 @@ public class GameController implements InterfaceController {
 						empate("vermelho");
 					} else {
 						sapoMovido = true;
-						houveUndo = false;
 						comecarNovaRodada();
 						notificarMudancaTabuleiro();
 					}
@@ -515,69 +505,6 @@ public class GameController implements InterfaceController {
 	}
 
 	@Override
-	// remove a flor de uma vitória regia
-	// @param action, o tipo da acao, se e um execute, desfazer ou refazer cada
-	// um e tratado diferente
-	public void removerFlor() {
-
-		VitoriaRegia vr = ((VitoriaRegia) tabuleiro.getElementAt(executedY, executedX)).getVr();
-
-		if (vr.getClass() == OvasAmarelasDecorator.class || vr.getClass() == OvasVermelhasDecorator.class) {
-			if (corSapoRemovido.equalsIgnoreCase("vermelho")) {
-				tabuleiro.setElementAt(new SapoVermelhoDecorator(vr), executedY, executedX);
-			} else if (corSapoRemovido.equalsIgnoreCase("amarelo")) {
-				vr = new SapoAmareloDecorator(vr);
-				tabuleiro.setElementAt(new SapoAmareloDecorator(vr), executedY, executedX);
-			}
-
-		} else {
-			tabuleiro.setElementAt(vr, executedY, executedX);
-		}
-		houveUndo = true;
-		notificarMudancaTabuleiro();
-		previousState();
-
-	}
-
-	@Override
-	// remove um sapo de uma vitória regia
-	// @param action, o tipo da acao, se e um execute, desfazer ou refazer cada
-	// um e tratado diferente
-	public void removerSapo() {
-		try {
-			if (conferirIndex()) {
-				VitoriaRegia vr = (VitoriaRegia) tabuleiro.getElementAt(executedY, executedX);
-				corSapoRemovido = vr.getSapo();
-				vr = ((VitoriaRegiaDecorator) vr).getVr();
-				tabuleiro.setElementAt(vr, executedY, executedX);
-				notificarMudancaTabuleiro();
-				houveUndo = true;
-				previousState();
-			}
-		} catch (Exception e) {
-			reloadState();
-		}
-	}
-
-	@Override
-	// desvira uma flor que inicialmente tinha a face virada para cima
-	// @param action, o tipo da acao, se e um execute, desfazer ou refazer cada
-	// um e tratado diferente
-	public void desvirarFlor() {
-		try {
-			if (conferirIndex()) {
-				VitoriaRegia vr = (VitoriaRegia) tabuleiro.getElementAt(executedY, executedX);
-				vr = ((VitoriaRegiaDecorator) vr).getVr();
-				tabuleiro.setElementAt(vr, executedY, executedX);
-				notificarMudancaTabuleiro();
-				previousState();
-			}
-		} catch (Exception e) {
-			reloadState();
-		}
-	}
-
-	@Override
 	// muda o jogador que a view esta apresentando ao usuario
 	public void mudarJogador() {
 		int[] valores = new int[3];
@@ -615,7 +542,6 @@ public class GameController implements InterfaceController {
 	public void moverPecasTabuleiroParaCima(String action) {
 		try {
 			if (conferirIndex()) {
-				validarUndo(action);
 				int coordX = -1;
 				for (int i = indexX; i > 0; i--) {
 					if (tabuleiro.getElementAt(indexY, i - 1).getClass() == Agua.class) {
@@ -636,8 +562,6 @@ public class GameController implements InterfaceController {
 
 					tabuleiro.setElementAt(aux, indexY, indexX);
 					indexX = coordX;
-					validarExecute(action);
-
 				}
 				notificarMudancaTabuleiro();
 				comecarNovaRodada();
@@ -654,7 +578,6 @@ public class GameController implements InterfaceController {
 	public void moverPecasTabuleiroParaBaixo(String action) {
 		try {
 			if (conferirIndex()) {
-				validarUndo(action);
 				int coordX = -1;
 				for (int i = indexX; i < 4; i++) {
 					if (tabuleiro.getElementAt(indexY, i + 1).getClass() == Agua.class) {
@@ -675,8 +598,6 @@ public class GameController implements InterfaceController {
 
 					tabuleiro.setElementAt(aux, indexY, indexX);
 					indexX = coordX;
-					validarExecute(action);
-
 				}
 
 				notificarMudancaTabuleiro();
@@ -694,7 +615,6 @@ public class GameController implements InterfaceController {
 	public void moverPecasTabuleiroParaEsquerda(String action) {
 		try {
 			if (conferirIndex()) {
-				validarUndo(action);
 				int coordY = -1;
 				for (int i = indexY; i > 0; i--) {
 					if (tabuleiro.getElementAt(i - 1, indexX).getClass() == Agua.class) {
@@ -715,7 +635,6 @@ public class GameController implements InterfaceController {
 
 					tabuleiro.setElementAt(aux, indexY, indexX);
 					indexY = coordY;
-					validarExecute(action);
 				}
 
 				notificarMudancaTabuleiro();
@@ -733,7 +652,6 @@ public class GameController implements InterfaceController {
 	public void moverPecasTabuleiroParaDireita(String action) {
 		try {
 			if (conferirIndex()) {
-				validarUndo(action);
 				int coordY = -1;
 				for (int i = indexY; i < 4; i++) {
 					if (tabuleiro.getElementAt(i + 1, indexX).getClass() == Agua.class) {
@@ -754,7 +672,6 @@ public class GameController implements InterfaceController {
 
 					tabuleiro.setElementAt(aux, indexY, indexX);
 					indexY = coordY;
-					validarExecute(action);
 				}
 
 				notificarMudancaTabuleiro();
@@ -763,30 +680,6 @@ public class GameController implements InterfaceController {
 		} catch (MovimentoInvalidoException | NenhumCampoSelecionadoException | CampoInvalidoException e) {
 			reloadState();
 		}
-	}
-
-	@Override
-	// caso o comando seja um undo ele utiliza as coordenadas da ultima acao
-	// @param action, o tipo da acao
-	public void validarUndo(String action) {
-		if (action.equalsIgnoreCase("undo")) {
-			indexX = executedX;
-			indexY = executedY;
-			houveUndo = true;
-		}
-
-	}
-
-	@Override
-	// guarda a coordenada da acao caso o usuario desfaca uma acao
-	// @param action, o tipo da acao, se e um execute
-	public void validarExecute(String action) {
-		if (action.equalsIgnoreCase("execute")) {
-			executedX = indexX;
-			executedY = indexY;
-			houveUndo = false;
-		}
-
 	}
 
 	// Metodo que procura a posicao dos 2 sapos no tabuleiro e retorna suas posicoes
@@ -839,14 +732,6 @@ public class GameController implements InterfaceController {
 	public void sapoState(boolean empate) {
 		for (Observador obs : observadores) {
 			obs.sapoState(empate);
-		}
-	}
-
-	// Notifica o observador que ele deve retornar ao estado anterior ao atual
-	@Override
-	public void previousState() {
-		for (Observador obs : observadores) {
-			obs.previousState();
 		}
 	}
 
