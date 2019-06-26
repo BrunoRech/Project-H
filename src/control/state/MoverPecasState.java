@@ -23,7 +23,6 @@ public class MoverPecasState extends GameState{
 	//atualiza a view com os botoes disponiveis nesse estado
 	@Override
 	public void loadState() {
-		System.out.println("Mover pecas state");
 		this.view.notificarSelecaoFlorDisponivel(false);
 		this.view.notificarMovimentacaoHabilitada(true);
 		this.view.notificarSelecaoTabuleiroAprovada(true);

@@ -2,6 +2,8 @@ package control;
 
 import javax.swing.Icon;
 
+import exception.SemFloresNoMonteException;
+
 //interface do controlador com a declaracao de cada metodo que sera usado
 public interface InterfaceController extends Observado{
 
@@ -23,7 +25,7 @@ public interface InterfaceController extends Observado{
 
 	void addObservador(Observador obs);
 	
-	boolean tabuleiroCheio();
+	boolean tabuleiroCheio() throws SemFloresNoMonteException;
 	
 	void removerSaposTabuleiro();
 	

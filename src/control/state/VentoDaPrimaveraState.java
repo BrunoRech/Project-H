@@ -24,7 +24,6 @@ public class VentoDaPrimaveraState extends GameState {
 	// atualiza a view com os botoes disponiveis nesse estado
 	@Override
 	public void loadState() {
-		System.out.println("Vento state");
 		this.view.notificarVentoDisponivel(true);
 	}
 

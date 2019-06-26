@@ -22,7 +22,6 @@ public class PosicionarFlorState extends GameState{
 	//atualiza a view com os botoes disponiveis nesse estado
 	@Override
 	public void loadState() {
-		System.out.println("posicionar flores state");
 		this.view.notificarSapoHabilitado(false);
 		this.view.notificarVentoDisponivel(false);
 		this.view.notificarAdicionarFlorHabilitado(true);

@@ -22,7 +22,6 @@ public class SelecionarFloresState extends GameState{
 	//atualiza a view com os botoes disponiveis nesse estado
 	@Override
 	public void loadState() {
-		System.out.println("Selecionar Flores state");
 		this.view.notificarSelecaoFlorDisponivel(true);
 		this.view.notificarVentoDisponivel(false);
 		this.view.notificarMovimentacaoHabilitada(false);

@@ -23,7 +23,6 @@ public class VirarState extends GameState{
 	//atualiza a view com os botoes disponiveis nesse estado
 	@Override
 	public void loadState() {
-		System.out.println("Virar Flor state");
 		this.view.notificarSelecaoFlorDisponivel(false);
 		this.view.notificarMovimentacaoHabilitada(false);
 		this.view.notificarSelecaoTabuleiroAprovada(true);

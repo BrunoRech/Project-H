@@ -16,7 +16,6 @@ public class MoverSapoState extends GameState {
 	//proximo estado
 	@Override
 	public void nextState() {
-		System.out.println(antecessor.toString());
 		switch (antecessor.toString()) {
 		case "PosicionarFlores":
 			this.view.setState(new VentoDaPrimaveraState(view, this));
@@ -32,7 +31,6 @@ public class MoverSapoState extends GameState {
 	//atualiza a view com os botoes disponiveis nesse estado
 	@Override
 	public void loadState() {
-		System.out.println("Mover sapo state");
 		this.view.notificarVentoDisponivel(false);
 		this.view.notificarSapoHabilitado(true);
 		this.view.notificarSelecaoFlorDisponivel(false);

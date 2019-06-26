@@ -19,6 +19,7 @@ import control.strategy.FinderDiagonal4;
 import control.strategy.FinderDiagonal5;
 import control.visitor.Pattern_Visitor;
 import exception.CampoInvalidoException;
+import exception.EmpateNaUltimaRodadaException;
 import exception.MovimentoInvalidoException;
 import exception.NenhumCampoSelecionadoException;
 import exception.SemFloresNoMonteException;
@@ -172,47 +173,46 @@ public class GameController implements InterfaceController {
 	// @param valor, o valor da flor que o usuario escolheu dentre as 3
 	// disponiveis na mao de cada jogado
 	public void escolherFlor(int valor) {
-
-		if (jogadorDaRodada.equalsIgnoreCase("amarelo")) {
-			valorAmarelo = valor;
-		} else {
-			valorVermelho = valor;
-		}
-
-		if (valorAmarelo == -1 || valorVermelho == -1) {
-			mudarJogador();
-		} else {
-			sapoMovido = true;
-			houveEmpate = false;
-			VitoriaRegia vr;
-			int[] pos = encontrarVrEscura();
-			if (valorAmarelo > valorVermelho) {
-				vencedorDaRodada = "amarelo";
-				vr = (VitoriaRegia) tabuleiro.getElementAt(pos[0], pos[1]);
-				tabuleiro.setElementAt(new FlorVermelhaDecorator(vr), pos[0], pos[1]);
-			} else if (valorAmarelo < valorVermelho) {
-				vencedorDaRodada = "vermelho";
-				vr = (VitoriaRegia) tabuleiro.getElementAt(pos[0], pos[1]);
-				tabuleiro.setElementAt(new FlorAmarelaDecorator(vr), pos[0], pos[1]);
-			} else if (!tabuleiroCheio() && valorAmarelo == valorVermelho) {
-				houveEmpate = true;
-				for (Observador obs : observadores) {
-					obs.notificarEmpateFlor();
-				}
-			}
-			removerFlorDaMao();
-			pescar(1);
-
-			if (tabuleiroCheio() && valorAmarelo == valorVermelho) {
-				limparMesa();
+		try {
+			if (jogadorDaRodada.equalsIgnoreCase("amarelo")) {
+				valorAmarelo = valor;
 			} else {
-				valorAmarelo = -1;
-				valorVermelho = -1;
-				if (!houveEmpate) {
+				valorVermelho = valor;
+			}
+
+			if (valorAmarelo == -1 || valorVermelho == -1 || valorAmarelo == 0 || valorVermelho == 0) {
+				mudarJogador();
+			} else {
+				sapoMovido = true;
+				houveEmpate = false;
+				VitoriaRegia vr;
+				int[] pos = encontrarVrEscura();
+				if (valorAmarelo > valorVermelho) {
+					vencedorDaRodada = "amarelo";
+					vr = (VitoriaRegia) tabuleiro.getElementAt(pos[0], pos[1]);
+					tabuleiro.setElementAt(new FlorVermelhaDecorator(vr), pos[0], pos[1]);
+				} else if (valorAmarelo < valorVermelho) {
+					vencedorDaRodada = "vermelho";
+					vr = (VitoriaRegia) tabuleiro.getElementAt(pos[0], pos[1]);
+					tabuleiro.setElementAt(new FlorAmarelaDecorator(vr), pos[0], pos[1]);
+				} else if (!tabuleiroCheio() && valorAmarelo == valorVermelho) {
+					houveEmpate = true;
+					for (Observador obs : observadores) {
+						obs.notificarEmpateFlor();
+					}
+				}
+
+				if (tabuleiroCheio() && valorAmarelo == valorVermelho) {
+					limparMesa();
+					throw new EmpateNaUltimaRodadaException();
+				} else {
 					nextState();
 				}
+
+				removerFlorDaMao();
+				pescar(1);
 			}
-		}
+		} catch (EmpateNaUltimaRodadaException e) {}
 
 	}
 
@@ -254,12 +254,15 @@ public class GameController implements InterfaceController {
 				houvePontuador = false;
 				verificarPadroes(1);
 				if (!houvePontuador) {
-					System.out.println("bbbb");
 					nextState();
 					if (ladoAmarelo.size() == 0 && ladoVermelho.size() == 0) {
 						limparMesa();
+						System.out.println("tabuleiro cheio");
 						throw new SemFloresNoMonteException();
 					}
+				} else {
+					System.out.println("houve pontuador");
+					limparMesa();
 				}
 			} catch (Exception e) {
 			}
@@ -386,13 +389,16 @@ public class GameController implements InterfaceController {
 	@Override
 	// notifica a view que comecou o vento da primavera
 	public void ventoDaPrimavera() {
-		if (tabuleiroCheio()) {
+		if (ladoAmarelo.size() == 1 && ladoVermelho.size() == 1) {
 			removerSaposTabuleiro();
 		}
 		houvePontuador = false;
 		verificarPadroes(1);
 		if (!houvePontuador) {
 			nextState();
+		} else {
+			System.out.println("houve pontuador vento");
+			limparMesa();
 		}
 	}
 
@@ -481,15 +487,9 @@ public class GameController implements InterfaceController {
 		if (visitor.amareloPontuou()) {
 			pontuacaoAmarelo += visitor.getPontuacao();
 			houvePontuador = true;
-			if (done) {
-				limparMesa();
-			}
 		} else if (visitor.vermelhoPontuou()) {
 			pontuacaoVermelho += visitor.getPontuacao();
 			houvePontuador = true;
-			if (done) {
-				limparMesa();
-			}
 		}
 
 		if (!done) {
@@ -497,7 +497,6 @@ public class GameController implements InterfaceController {
 			verificarPadroes(estrategia);
 
 		} else {
-
 			for (Observador obs : observadores) {
 				obs.notificarGanhadorDaRodada(pontuacaoAmarelo, pontuacaoVermelho);
 			}
@@ -704,7 +703,7 @@ public class GameController implements InterfaceController {
 	// Metodo que verifica se o tabuleiro esta cheio
 	@Override
 	public boolean tabuleiroCheio() {
-		return (ladoAmarelo.size() <= 2 && ladoVermelho.size() <= 2);
+		return (ladoAmarelo.size() < 1 && ladoVermelho.size() < 1);
 	}
 
 	// Metodo que remove os sapos do tabuleiro quando o tabuleiro estiver cheio
