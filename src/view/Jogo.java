@@ -570,9 +570,8 @@ public class Jogo extends JFrame implements Observador {
 	// mostra quem ganhou o jogo
 	@Override
 	public void notificarGanhadorDoJogo(String vencedor) {
-		JOptionPane.showMessageDialog(null, "Acabou o jogo!\nVencedor: Jogador " + vencedor);
 		pontos.setIcon(new ImageIcon("imagens/pontuacao/pontuacao0x0.png"));
-		
+		JOptionPane.showMessageDialog(null, "Acabou o jogo!\nVencedor: Jogador " + vencedor);
 	}
 	
 	// recarrega o estado atual do jogo caso ocorrer alguma excessao

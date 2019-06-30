@@ -257,11 +257,9 @@ public class GameController implements InterfaceController {
 					nextState();
 					if (ladoAmarelo.size() == 0 && ladoVermelho.size() == 0) {
 						limparMesa();
-						System.out.println("tabuleiro cheio");
 						throw new SemFloresNoMonteException();
 					}
 				} else {
-					System.out.println("houve pontuador");
 					limparMesa();
 				}
 			} catch (Exception e) {
@@ -397,7 +395,6 @@ public class GameController implements InterfaceController {
 		if (!houvePontuador) {
 			nextState();
 		} else {
-			System.out.println("houve pontuador vento");
 			limparMesa();
 		}
 	}
